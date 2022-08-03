@@ -1,3 +1,28 @@
 body {
     background-color: ghostwhite;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+font-family: 'Major Mono Display', monospace;
+}
+
+.siteHeadline {
+    text-orientation: upright;
+    writing-mode: vertical-lr;
+}
+
+.registration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.error {
+    color: rgb(185, 0, 0);
+}
+
+.big {
+    font-size: 1.2rem;
 }
