@@ -1,3 +1,6 @@
 {
-    "javascript.suggest.autoImports": false
+    "javascript.suggest.autoImports": false,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    }
 }

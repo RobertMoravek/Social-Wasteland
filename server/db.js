@@ -12,8 +12,8 @@ if (process.env.NODE_ENV == 'production') {
 
 const db = spicedPg(dbUrl);
 
-module.exports.getNumOfSigners = () => {
-    return db.query(`SELECT COUNT(*) FROM signatures`);
+module.exports.doesEmailExist = (email) => {
+    return db.query(`SELECT * FROM users WHERE email=$1`, [email]);
 };
 
 module.exports.insertUser = (firstName, lastName, email, password) => {
@@ -28,6 +28,45 @@ module.exports.insertUser = (firstName, lastName, email, password) => {
 
         });
 };
+
+module.exports.insertResetCode = (email, resetCode) => {
+    return db.query(
+        `
+        INSERT INTO reset_codes (email, code)
+            VALUES ($1, $2) RETURNING code`,
+        [email, resetCode]
+    );
+
+};
+
+
+module.exports.checkResetCode = (email, code) => {
+    return db.query(`SELECT * FROM reset_codes WHERE email=$1 AND code=$2`, [email, code]);
+};
+
+
+module.exports.updatePassword = (email, password) => {
+    console.log(email, password);
+    return hashPassword(password).
+        then((password) => {
+            console.log(password);
+            db.query(
+                `
+                UPDATE users SET password=$2 WHERE email=$1 RETURNING id
+                `,
+                [email, password]
+            ).then((result) => {
+                console.log(result);
+                return result;
+            });
+        })
+        .catch(() => {
+            return false;
+        });
+};
+
+
+
 
 
 module.exports.getProfile = (id) => {
@@ -124,7 +163,7 @@ module.exports.loginUser = (email, password) => {
             return comparePasswords(password, result.rows[0].password);
         })
         .then((result) => {
-            // console.log("result2", result);
+            console.log("result after password compare", result);
             if(result){
                 // console.log("result.rows[0].id", temp.rows[0].id);
                 return temp.rows[0].id;

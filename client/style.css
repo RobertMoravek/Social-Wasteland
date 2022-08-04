@@ -2,21 +2,42 @@ body {
     background-color: ghostwhite;
     margin: 0;
     padding: 0;
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100vw;
+    /* background-image: url("/bg1.jpg") ;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white; */
 }
 
 h1, h2, h3 {
 font-family: 'Major Mono Display', monospace;
 }
 
-.siteHeadline {
+.site-headline {
+    position: fixed;
+    top: 0;
+    left: 0;
     text-orientation: upright;
     writing-mode: vertical-lr;
 }
 
-.registration {
+.component-headline {
+    text-orientation: upright;
+    writing-mode: vertical-lr;
+}
+
+.component-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    width: 100%;
+    /* border: 1px solid rgb(255, 0, 0); */
 }
 
 .error {
@@ -25,4 +46,22 @@ font-family: 'Major Mono Display', monospace;
 
 .big {
     font-size: 1.2rem;
+}
+
+.component {
+    display: flex;
+    flex-direction: row;
+}
+
+.registration {
+    width: 500px;
+    /* border: 1px solid rgb(42, 0, 158); */
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
 }

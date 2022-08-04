@@ -1,22 +1,14 @@
 import {Component} from "react";
 import {Link} from "react-router-dom";
 
-class Registration extends Component {
+class Login extends Component {
 
     constructor () {
         super();
         this.state = {
-            firstName: "",
-            lastName: "",
             email: "",
             password: "",
             error: false,
-            errorData: {
-                firstName: false,
-                lastName: false,
-                email: false,
-                password: false,
-            }
 
         };
         this.changeInputInConstructor = this.changeInputInConstructor.bind(this);
@@ -30,14 +22,12 @@ class Registration extends Component {
     submitForm(e) {
         e.preventDefault();
         let body = {
-            firstName: this.firstName,
-            lastName: this.lastName,
             email: this.email,
             password: this.password
         };
         if (this.checkInputFields(body)){
             body = JSON.stringify(body);
-            fetch("/register", {
+            fetch("/login", {
                 method: "post",
                 headers: { "Content-Type": "application/json" },
                 body: body,
@@ -60,41 +50,28 @@ class Registration extends Component {
 
 
     checkInputFields() {
-        this.errorData.firstName = this.state.firstName.length < 2 ? true : false;
-        this.errorData.lastName = this.state.lastName.length < 2 ? true : false;
-        this.errorData.email = this.state.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? false : true;
-        this.errorData.password = this.state.lastName.length < 8 ? true : false;
-        for (let item in this.errorData){
-            if (!item){
-                return false;
-            }
-        }
+        // does nothing yet
         return true;
     }
 
     render () {
         return (
-            <div className="component registration">
+            <div className="component login">
                 <div className="component-headline">
-                    <h2>Registration</h2>
+                    <h2>Login</h2>
                 </div>
                 <div className="component-content">
-                    <form className="form" name="registrationForm" onSubmit={this.submitForm}>
-                        <label htmlFor="firstName">First Name</label>
-                        <input type="text" name="firstName" onChange={this.changeInputInConstructor}></input>
-
-                        <label htmlFor="lastName">Last Name</label>
-                        <input type="text" name="lastName" onChange={this.changeInputInConstructor}></input>
-
+                    <form className="form" name="loginForm" onSubmit={this.submitForm}>
                         <label htmlFor="email">E-Mail</label>
                         <input type="email" name="email" onChange={this.changeInputInConstructor}></input>
 
                         <label htmlFor="password">Password</label>
                         <input type="password" name="password" onChange={this.changeInputInConstructor}></input>
 
-                        <input type="submit" value="Register"></input>
+                        <input type="submit" value="Login"></input>
 
-                        <p>Already a member? <Link to="/login">Log in here!</Link></p>
+                        <p>Forgot your password? <Link to="/forgotpassword">Change it here!</Link></p>
+                        <p>Not yet member? <Link to="/">Register here!</Link></p>
 
                         {this.state.error && <span className="error big">There was an error while trying to send the data. Please try again!</span>}
                     </form>
@@ -105,4 +82,4 @@ class Registration extends Component {
     }
 }
 
-export default Registration;
+export default Login;

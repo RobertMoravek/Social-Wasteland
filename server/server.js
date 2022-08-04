@@ -3,6 +3,10 @@ const app = express();
 const compression = require("compression");
 const path = require("path");
 const db = require("./db.js");
+const cryptoRandomString = require("crypto-random-string");
+const sendCode = require("./ses.js");
+
+
 
 app.use(compression());
 
@@ -47,10 +51,94 @@ app.post("/register", (req, res) => {
         });
 });
 
+app.post("/login", (req, res) => {
+    let {email, password} = req.body;
+    db.loginUser(email, password)
+        .then((result) => {
+            req.session.userId = result;
+            res.json(result);
+            return;
+            
+        })
+        .catch((err) => {
+            res.json({error: true, code: err.code});
+            return;
+        });
+});
+
 app.get("/user/id.json", function (req, res) {
     res.json({
         userId: req.session.userId
     });
+});
+
+app.get("/logout", (req, res) => {
+    req.session.userId = null;
+    res.redirect("/");
+});
+
+app.post("/checkandsendmailfornewpassword", (req, res) => {
+    let {email} = req.body;
+    db.doesEmailExist(email)
+        .then((result) => {
+            if (result.rowCount === 1){
+                let code = cryptoRandomString({ length: 6 });
+                db.insertResetCode(email, code)
+                    .then((result) => {
+                        sendCode.sendCode(result.rows[0].code)
+                            .then((result) => {
+                                res.json({ emailExists: result });
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        res.json({ emailExists: false });
+                    });
+            } else {
+                res.json({ emailExists: false });
+            }
+        })
+        .catch(() => {
+            res.json({ emailExists: false });
+        });
+    
+});
+
+app.post("/checkcode", (req, res) => {
+    let {email, code} = req.body;
+    db.checkResetCode(email, code)
+        .then((result) => {
+            console.log(result);
+            if (result.rowCount === 1){
+                console.log('code correct');
+                res.json({codecorrect: true});
+            } else {
+                res.json({codecorrect: false});
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.json({codecorrect: false});
+        });
+    
+});
+
+app.post("/updatepassword", (req, res) => {
+    let {email, password} = req.body;
+    db.updatePassword(email, password)
+        .then((result) => {
+            console.log(result);
+            if (result.rowCount === 1){
+                res.json({passwordChanged: true});
+            } else {
+                res.json({ passwordChanged: false });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+            res.json({ passwordChanged: false });
+        });
+    
 });
 
 app.get("*", function (req, res) {
