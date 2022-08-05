@@ -40,6 +40,39 @@ font-family: 'Major Mono Display', monospace;
     /* border: 1px solid rgb(255, 0, 0); */
 }
 
+.profile-image-corner {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border: 1px solid black;
+    width: 75px;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    user-select: none;
+    cursor: pointer;
+}
+
+.uploadForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid black;
+    height: auto;
+    overflow: hidden;
+    transition: 0.5s;
+    margin-top: 0.25rem;
+    background-color: ghostwhite;
+}
+
 .error {
     color: rgb(185, 0, 0);
 }

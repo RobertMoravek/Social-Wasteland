@@ -5,6 +5,8 @@ const path = require("path");
 const db = require("./db.js");
 const cryptoRandomString = require("crypto-random-string");
 const sendCode = require("./ses.js");
+const { uploader } = require("./middleware.js");
+const s3 = require("./S3.js");
 
 
 
@@ -139,6 +141,17 @@ app.post("/updatepassword", (req, res) => {
             res.json({ passwordChanged: false });
         });
     
+});
+
+app.post("/uploadprofilepic", uploader.single("uploadInput"), s3.upload, async (req, res) => {
+    
+    let result = db.updateProfilePic(req.session.userId, "https://s3.amazonaws.com/spicedling/"+req.file.filename);
+    console.log(await result);
+    res.json((await result).rows[0].profile_pic_url);
+});
+
+app.get("/loaduserinfo", async (req, res) => {
+    res.json((await (db.getUserInfo(req.session.userId))).rows[0]);
 });
 
 app.get("*", function (req, res) {

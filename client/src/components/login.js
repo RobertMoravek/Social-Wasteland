@@ -58,7 +58,7 @@ class Login extends Component {
         return (
             <div className="component login">
                 <div className="component-headline">
-                    <h2>Login</h2>
+                    <h2>login</h2>
                 </div>
                 <div className="component-content">
                     <form className="form" name="loginForm" onSubmit={this.submitForm}>

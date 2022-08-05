@@ -20,7 +20,7 @@ export class ForgotPassword extends Component {
             return (
                 <div className="component reset-password">
                     <div className="component-headline">
-                        <h2>Reset</h2>
+                        <h2>reset</h2>
                     </div>
                     <div className="component-content">
                         <form
@@ -40,7 +40,7 @@ export class ForgotPassword extends Component {
             return (
                 <div className="component reset-password">
                     <div className="component-headline">
-                        <h2>Reset</h2>
+                        <h2>reset</h2>
                     </div>
                     <div className="component-content">
                         <form name="resetPasswordCode" onSubmit={this.submitForm} className="form">
@@ -56,7 +56,7 @@ export class ForgotPassword extends Component {
             return (
                 <div className="component reset-password">
                     <div className="component-headline">
-                        <h2>Reset</h2>
+                        <h2>reset</h2>
                     </div>
                     <div className="component-content">
                         <form name="createNewPassword" onSubmit={this.submitForm} className="form">
@@ -74,7 +74,7 @@ export class ForgotPassword extends Component {
             return (
                 <div className="component reset-password">
                     <div className="component-headline">
-                        <h2>Reset</h2>
+                        <h2>reset</h2>
                     </div>
                     <div className="component-content">
                         <h3>You successfully changed your password!</h3>

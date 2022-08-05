@@ -50,21 +50,35 @@ module.exports.updatePassword = (email, password) => {
     return hashPassword(password).
         then((password) => {
             console.log(password);
-            db.query(
+            return db.query(
                 `
                 UPDATE users SET password=$2 WHERE email=$1 RETURNING id
                 `,
                 [email, password]
-            ).then((result) => {
-                console.log(result);
-                return result;
-            });
+            );
         })
         .catch(() => {
             return false;
         });
 };
 
+module.exports.updateProfilePic = (id, url) => {
+    return db.query(
+        `
+       UPDATE users SET profile_pic_url=$2 WHERE id=$1 RETURNING profile_pic_url
+        `,
+        [id, url]
+    );
+};
+
+module.exports.getUserInfo = (id) => {
+    return db.query(
+        `
+        SELECT * FROM users WHERE id=$1
+        `,
+        [id]
+    );
+};
 
 
 

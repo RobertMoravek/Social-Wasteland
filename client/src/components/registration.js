@@ -76,7 +76,7 @@ class Registration extends Component {
         return (
             <div className="component registration">
                 <div className="component-headline">
-                    <h2>Registration</h2>
+                    <h2>registration</h2>
                 </div>
                 <div className="component-content">
                     <form className="form" name="registrationForm" onSubmit={this.submitForm}>
