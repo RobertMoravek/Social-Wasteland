@@ -7,7 +7,7 @@ export default function ProfilePic({ openProfilePicUploader, imgFromApp, firstNa
             <img
                 src={imgFromApp}
                 alt={alt}
-                className="profile-image-corner"
+                className="profile-image"
                 onClick={openProfilePicUploader}
             />
         </>

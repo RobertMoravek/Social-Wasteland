@@ -110,7 +110,7 @@ app.post("/checkcode", (req, res) => {
     let {email, code} = req.body;
     db.checkResetCode(email, code)
         .then((result) => {
-            console.log(result);
+            // console.log(result);
             if (result.rowCount === 1){
                 console.log('code correct');
                 res.json({codecorrect: true});
@@ -129,7 +129,7 @@ app.post("/updatepassword", (req, res) => {
     let {email, password} = req.body;
     db.updatePassword(email, password)
         .then((result) => {
-            console.log(result);
+            // console.log(result);
             if (result.rowCount === 1){
                 res.json({passwordChanged: true});
             } else {
@@ -146,12 +146,16 @@ app.post("/updatepassword", (req, res) => {
 app.post("/uploadprofilepic", uploader.single("uploadInput"), s3.upload, async (req, res) => {
     
     let result = db.updateProfilePic(req.session.userId, "https://s3.amazonaws.com/spicedling/"+req.file.filename);
-    console.log(await result);
+    // console.log(await result);
     res.json((await result).rows[0].profile_pic_url);
 });
 
 app.get("/loaduserinfo", async (req, res) => {
     res.json((await (db.getUserInfo(req.session.userId))).rows[0]);
+});
+
+app.post("/updatebio", async (req, res) => {
+    res.json((await (db.updateBio(req.session.userId, req.body.newBio))).rows[0]);
 });
 
 app.get("*", function (req, res) {

@@ -35,7 +35,7 @@ export class ProfilePicUploader extends Component {
             .then((result) => {
                 if (!result.error) {
                     console.log(result);
-                    this.props.getUpdatetProfileUrl(result);
+                    this.props.getUpdatedProfileUrl(result);
                 } else {
                     console.log('upload failed');
                     this.setState({ profilePicUpdateError: true });

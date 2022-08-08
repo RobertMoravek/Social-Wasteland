@@ -71,6 +71,15 @@ module.exports.updateProfilePic = (id, url) => {
     );
 };
 
+module.exports.updateBio = (id, bio) => {
+    return db.query(
+        `
+       UPDATE users SET bio=$2 WHERE id=$1 RETURNING bio
+        `,
+        [id, bio]
+    );
+};
+
 module.exports.getUserInfo = (id) => {
     return db.query(
         `
@@ -177,7 +186,7 @@ module.exports.loginUser = (email, password) => {
             return comparePasswords(password, result.rows[0].password);
         })
         .then((result) => {
-            console.log("result after password compare", result);
+            // console.log("result after password compare", result);
             if(result){
                 // console.log("result.rows[0].id", temp.rows[0].id);
                 return temp.rows[0].id;

@@ -15,6 +15,15 @@ body {
     color: white; */
 }
 
+nav {
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* border: 1px solid red; */
+}
+
 h1, h2, h3 {
 font-family: 'Major Mono Display', monospace;
 }
@@ -40,13 +49,9 @@ font-family: 'Major Mono Display', monospace;
     /* border: 1px solid rgb(255, 0, 0); */
 }
 
-.profile-image-corner {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+.profile-image {
     border: 1px solid black;
-    width: 75px;
-    height: 75px;
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,6 +59,24 @@ font-family: 'Major Mono Display', monospace;
     user-select: none;
     cursor: pointer;
 }
+
+nav .profile-image {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 75px;
+    height: 75px;
+}
+
+
+.profile .profile-image {
+    top: 20px;
+    right: 20px;
+    width: 150px;
+    height: 150px;
+
+}
+
 
 .uploadForm {
     position: fixed;
@@ -75,6 +98,10 @@ font-family: 'Major Mono Display', monospace;
 
 .error {
     color: rgb(185, 0, 0);
+}
+
+.red-border {
+    border: 2px solid rgb(185, 0, 0);
 }
 
 .big {
