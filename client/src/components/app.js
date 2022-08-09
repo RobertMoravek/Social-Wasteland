@@ -2,6 +2,8 @@ import { Component } from "react";
 import ProfilePic from "./profilePic.js";
 import {ProfilePicUploader} from "./profilePicUploader.js";
 import Profile from "./profile.js";
+import FindUsers from "./findUsers.js";
+import { BrowserRouter, Route } from "react-router-dom";
 
 // import { Link } from "react-router-dom";
 
@@ -72,16 +74,31 @@ export class App extends Component {
                         firstNameFromApp={this.state.firstName}
                         lastNameFromApp={this.state.lastName}
                     />
-                    {this.state.isProfileUploaderVisible && <ProfilePicUploader getUpdatedProfileUrl={this.getUpdatedProfileUrl}/>}
+                    {this.state.isProfileUploaderVisible && (
+                        <ProfilePicUploader
+                            getUpdatedProfileUrl={this.getUpdatedProfileUrl}
+                        />
+                    )}
                 </nav>
-                <Profile
-                    openProfilePicUploader={this.openProfilePicUploader}
-                    imgFromApp={this.state.profilePicUrl}
-                    firstNameFromApp={this.state.firstName}
-                    lastNameFromApp={this.state.lastName}
-                    bio={this.state.bio}
-                    giveBackBio={this.giveBackBio}
-                />
+                <section>
+                    <BrowserRouter>
+                        <Route exact path="/">
+                            <Profile
+                                openProfilePicUploader={
+                                    this.openProfilePicUploader
+                                }
+                                imgFromApp={this.state.profilePicUrl}
+                                firstNameFromApp={this.state.firstName}
+                                lastNameFromApp={this.state.lastName}
+                                bio={this.state.bio}
+                                giveBackBio={this.giveBackBio}
+                            />
+                        </Route>
+                        <Route exact path="/users">
+                            <FindUsers />
+                        </Route>
+                    </BrowserRouter>
+                </section>
             </>
         );
     }

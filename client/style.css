@@ -68,6 +68,10 @@ nav .profile-image {
     height: 75px;
 }
 
+section {
+    margin-top: 120px;
+    /* border: 1px solid black; */
+}
 
 .profile .profile-image {
     top: 20px;

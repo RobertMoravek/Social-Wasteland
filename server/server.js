@@ -154,6 +154,14 @@ app.get("/loaduserinfo", async (req, res) => {
     res.json((await (db.getUserInfo(req.session.userId))).rows[0]);
 });
 
+app.get("/getnewestusers", async (req, res) => {
+    res.json((await (db.getNewestUsers())));
+});
+
+app.get("/searchusers/:input", async (req, res) => {
+    res.json((await (db.searchUsers(req.params.input))));
+});
+
 app.post("/updatebio", async (req, res) => {
     res.json((await (db.updateBio(req.session.userId, req.body.newBio))).rows[0]);
 });

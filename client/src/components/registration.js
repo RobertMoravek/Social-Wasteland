@@ -32,16 +32,14 @@ class Registration extends Component {
     submitForm(e) {
         e.preventDefault();
         let body = {
-            firstName: this.firstName,
-            lastName: this.lastName,
-            email: this.email,
-            password: this.password
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            email: this.state.email,
+            password: this.state.password
         };
-        if (!this.checkInputFields(body)){
-            setTimeout(() => {
-                console.log(this.state.error);
-                
-            }, 1000);
+        if (!this.checkInputFields()){
+            console.log("Passed the errorcheck");
+
             // body = JSON.stringify(body);
             // fetch("/register", {
             //     method: "post",
@@ -61,37 +59,36 @@ class Registration extends Component {
             //     });
         } else {
             console.log('something is missing');
-            setTimeout(() => {
-                console.log(this.state.error);
-            }, 1000);
         }
     }
 
 
-    checkInputFields() {
-
+    async checkInputFields() {
+        let error = false;
         // this.setState({errorData: {
         //     firstName: false,
         //     lastName: false,
         //     email: false,
         //     password: false,
         // }});
-        this.setState({error: false});
-        console.log("length of firstname", this.state.firstName.length);
+        // this.setState({error: false});
+        console.log("state", this.state);
         this.setState({ errorData : 
             {firstName : this.state.firstName.length < 2 ? true : false,
                 lastName : this.state.lastName.length < 2 ? true : false,
-                email : this.state.email.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? false : true,
+                email : this.state.email.length < 4 ? true : false,
                 password : this.state.password.length < 8 ? true : false}});
         // this.forceUpdate();
-        console.log(this.state.errorData);
+        console.log("await errordata", await this.state.errorData);
 
         for (let item in this.state.errorData){
-            console.log(this.state.errorData[item], item);
+            // console.log(this.state.errorData[item], item);
             if (this.state.errorData[item]) {
                 return true;
+
             }
         } 
+        console.log(error);
         return false;
     }
 
@@ -103,17 +100,17 @@ class Registration extends Component {
                 </div>
                 <div className="component-content">
                     <form className="form" name="registrationForm" onSubmit={this.submitForm}>
-                        <label htmlFor="firstName" className={`${!this.state.errorData.firstName ? "" : "error"}`}>First Name</label>
-                        <input type="text" name="firstName" onChange={this.changeInputInConstructor} className={`${this.state.errorData.firstName == false ? "" : "red-border"}`}></input>
+                        <label htmlFor="firstName" className={!this.state.errorData.firstName ? "" : "error"}>First Name</label>
+                        <input type="text" name="firstName" onChange={this.changeInputInConstructor} className={!this.state.errorData.firstName ? "" : "red-border"}></input>
 
-                        <label htmlFor="lastName" className={`${!this.state.errorData.firstName ? "" : "error"}`}>Last Name</label>
-                        <input type="text" name="lastName" onChange={this.changeInputInConstructor} className={`${!this.state.errorData.firstName ? "" : "red-border"}`}></input>
+                        <label htmlFor="lastName" className={!this.state.errorData.firstName ? "" : "error"}>Last Name</label>
+                        <input type="text" name="lastName" onChange={this.changeInputInConstructor} className={!this.state.errorData.firstName ? "" : "red-border"}></input>
 
-                        <label htmlFor="email" className={`${!this.state.errorData.firstName ? "" : "error"}`}>E-Mail</label>
-                        <input type="email" name="email" onChange={this.changeInputInConstructor} className={`${!this.state.errorData.firstName ? "" : "red-border"}`}></input>
+                        <label htmlFor="email" className={!this.state.errorData.firstName ? "" : "error"}>E-Mail</label>
+                        <input type="email" name="email" onChange={this.changeInputInConstructor} className={!this.state.errorData.firstName ? "" : "red-border"}></input>
 
-                        <label htmlFor="password" className={`${!this.state.errorData.firstName ? "" : "error"}`}>Password</label>
-                        <input type="password" name="password" onChange={this.changeInputInConstructor} className={`${!this.state.errorData.firstName ? "" : "red-border"}`}></input>
+                        <label htmlFor="password" className={!this.state.errorData.firstName ? "" : "error"}>Password</label>
+                        <input type="password" name="password" onChange={this.changeInputInConstructor} className={!this.state.errorData.firstName ? "" : "red-border"}></input>
 
                         <input type="submit" value="Register"></input>
 

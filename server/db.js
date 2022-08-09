@@ -89,6 +89,23 @@ module.exports.getUserInfo = (id) => {
     );
 };
 
+module.exports.getNewestUsers = () => {
+    return db.query(
+        `
+           SELECT * FROM users ORDER BY id DESC LIMIT 3
+        `,
+        []
+    );
+};
+
+module.exports.searchUsers = (input) => {
+    return db.query(
+        `
+        SELECT * FROM users WHERE firstname ILIKE $1 OR lastname ILIKE $1 LIMIT 10;`,
+        [input + '%']
+    );
+};
+
 
 
 
