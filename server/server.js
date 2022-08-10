@@ -154,6 +154,11 @@ app.get("/loaduserinfo", async (req, res) => {
     res.json((await (db.getUserInfo(req.session.userId))).rows[0]);
 });
 
+app.get("/loadotheruserinfo/:id", async (req, res) => {
+    console.log(req.params.id);
+    res.json((await db.getUserInfo(req.params.id)));
+});
+
 app.get("/getnewestusers", async (req, res) => {
     res.json((await (db.getNewestUsers())));
 });

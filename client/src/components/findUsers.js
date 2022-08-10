@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 
 export default function FindUsers() {
     let [newestUsers, setNewestUsers] = useState([]);
-    let [userSearchResults, setuserSearchResults] = useState([]);
+    let [userSearchResults, setUserSearchResults] = useState([]);
     let [isNewestUsersVisible, setIsNewestUsersVisible] = useState(true);
     let [userSearchField, setUserSearchField] = useState("");  
 
@@ -22,7 +23,7 @@ export default function FindUsers() {
                 .then((result) => {
                     if (!result.error) {
                         console.log(result);
-                        setuserSearchResults(result.rows);
+                        setUserSearchResults(result.rows);
                     } else {
                         console.log("loading newest users failed", result);
                     }
@@ -62,8 +63,10 @@ export default function FindUsers() {
                 <h2>newest users</h2>
                 {newestUsers.map((item) => (
                     <div key={item.id}>
-                        <img src={item.profile_pic_url} alt="" />
-                        <p>{item.firstname} {item.lastname}</p>
+                        <Link to={"/users/"+item.id}>
+                            <img src={item.profile_pic_url} alt="" />
+                            <p>{item.firstname} {item.lastname}</p>
+                        </Link>
                     </div>
                 ))}
                 
@@ -71,8 +74,10 @@ export default function FindUsers() {
                 <h2>user search</h2>
                 {userSearchResults.map((item) => (
                     <div key={item.id}>
-                        <img src={item.profile_pic_url} alt="" />
-                        <p>{item.firstname} {item.lastname}</p>
+                        <Link to={"/users/"+item.id}>
+                            <img src={item.profile_pic_url} alt="" />
+                            <p>{item.firstname} {item.lastname}</p>
+                        </Link>
                     </div>
                 ))}
             </div> }

@@ -1,13 +1,17 @@
 import { Component } from "react";
+import { BrowserRouter, Route } from "react-router-dom";
+import { useParams } from "react-router";
 import ProfilePic from "./profilePic.js";
 import {ProfilePicUploader} from "./profilePicUploader.js";
 import Profile from "./profile.js";
 import FindUsers from "./findUsers.js";
-import { BrowserRouter, Route } from "react-router-dom";
+import ShowOtherUsers from "./otherUserProfile.js";
 
 // import { Link } from "react-router-dom";
 
 export class App extends Component {
+    
+    
     constructor() {
         super();
         this.state = {
@@ -16,7 +20,8 @@ export class App extends Component {
             lastName: "",
             email: "",
             profilePicUrl: "",
-            bio: ""
+            bio: "",
+            id: "",
         };
 
         this.openProfilePicUploader = this.openProfilePicUploader.bind(this);
@@ -40,6 +45,7 @@ export class App extends Component {
                         email: result.email,
                         profilePicUrl: result.profile_pic_url,
                         bio: result.bio,
+                        id: result.id,
                     });
                     // console.log(this.state);
                 } else {
@@ -96,6 +102,11 @@ export class App extends Component {
                         </Route>
                         <Route exact path="/users">
                             <FindUsers />
+                        </Route>
+                        <Route exact path="/users/:id">
+                            <ShowOtherUsers
+                                userId={this.state.id}
+                            />
                         </Route>
                     </BrowserRouter>
                 </section>

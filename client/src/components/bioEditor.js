@@ -61,7 +61,7 @@ export default class BioEditor extends Component {
                             onChange={this.changeNewBio}
                         ></textarea>
                         <button
-                            onClick={this.saveNewBio}>
+                            onClick={this.saveNewBio} id="save">
                             Save your bio
                         </button>
                         <button onClick={this.toggleEditor}>Cancel</button>
@@ -74,7 +74,7 @@ export default class BioEditor extends Component {
                         </button>
                     </>
                 ) : (
-                    <button onClick={this.toggleEditor}>Add your bio</button>
+                    <button onClick={this.toggleEditor} id="add">Add your bio</button>
                 )}
             </div>
         );

@@ -81,6 +81,7 @@ module.exports.updateBio = (id, bio) => {
 };
 
 module.exports.getUserInfo = (id) => {
+    
     return db.query(
         `
         SELECT * FROM users WHERE id=$1
