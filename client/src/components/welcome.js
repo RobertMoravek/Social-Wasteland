@@ -11,7 +11,7 @@ class Welcome extends Component {
     render () {
         return (
             <>
-                <h1 className="site-headline">welcome</h1>
+                <h1 className="site-headline">the social wasteland</h1>
                 <BrowserRouter>
                     <Route exact path="/">
                         <Registration/>

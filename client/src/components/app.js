@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import { useParams } from "react-router";
 import ProfilePic from "./profilePic.js";
 import {ProfilePicUploader} from "./profilePicUploader.js";
@@ -73,7 +73,7 @@ export class App extends Component {
         return (
             <>
                 <nav>
-                    <h1>the social wasteland</h1>
+                    <h1 className="site-headline">the social wasteland</h1>
                     <ProfilePic
                         openProfilePicUploader={this.openProfilePicUploader}
                         imgFromApp={this.state.profilePicUrl}
@@ -104,10 +104,9 @@ export class App extends Component {
                             <FindUsers />
                         </Route>
                         <Route exact path="/users/:id">
-                            <ShowOtherUsers
-                                userId={this.state.id}
-                            />
+                            <ShowOtherUsers userId={this.state.id} />
                         </Route>
+                        {/* <Redirect from="*" to="/" /> */}
                     </BrowserRouter>
                 </section>
             </>

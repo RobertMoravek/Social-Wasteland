@@ -107,6 +107,53 @@ module.exports.searchUsers = (input) => {
     );
 };
 
+module.exports.getSingleFriendship = (myId, otherId) => {
+    return db.query(
+        `
+        SELECT * FROM friendships WHERE (sender_id=$1 AND recipient_id=$2) OR (sender_id=$2 AND recipient_id=$1);`,
+        [myId, otherId]
+    );
+};
+
+module.exports.getAllFriendships = (myId) => {
+    return db.query(
+        `
+        SELECT * FROM friendships WHERE sender_id=$1 OR recipient_id=$1;`,
+        [myId]
+    );
+};
+
+
+module.exports.makeFriendshipRequest = (myId, otherId) => {
+    console.log(myId, otherId);
+    return db.query(
+        `
+       INSERT INTO friendships (sender_id, recipient_id)
+                VALUES ($1, $2) RETURNING id
+        `,
+        [myId, otherId]
+    );
+};
+
+
+module.exports.cancelFriendship = (myId, otherId) => {
+    return db.query(
+        `
+       DELETE FROM friendships WHERE (sender_id=$1 AND recipient_id=$2) OR (sender_id=$2 AND recipient_id=$1)
+        `,
+        [myId, otherId]
+    );
+};
+
+module.exports.acceptFriendship = (myId, otherId) => {
+    return db.query(
+        `
+       UPDATE friendships SET accepted=true WHERE sender_id=$2 AND recipient_id=$1 RETURNING accepted
+        `,
+        [myId, otherId]
+    );
+};
+
 
 
 

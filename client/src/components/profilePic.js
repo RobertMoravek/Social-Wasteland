@@ -2,6 +2,7 @@
 export default function ProfilePic({ openProfilePicUploader, imgFromApp, firstNameFromApp, lastNameFromApp }) {
     // console.log("PROPS in profilePic: ", props);
     let alt = `${firstNameFromApp} ${lastNameFromApp}`;
+    imgFromApp = imgFromApp || "../defaultprofile.jpg";
     return (
         <>
             <img

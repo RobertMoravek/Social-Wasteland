@@ -24,7 +24,7 @@ class Registration extends Component {
     }
 
     changeInputInConstructor (e) {
-        this.setState({[e.currentTarget.name] : e.currentTarget.value})
+        this.setState({[e.currentTarget.name] : e.currentTarget.value});
         // this[e.currentTarget.name] = e.currentTarget.value;
         // console.log(e.currentTarget);
     }
@@ -37,26 +37,26 @@ class Registration extends Component {
             email: this.state.email,
             password: this.state.password
         };
-        if (!this.checkInputFields()){
+        if (this.checkInputFields()){
             console.log("Passed the errorcheck");
 
-            // body = JSON.stringify(body);
-            // fetch("/register", {
-            //     method: "post",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: body,
-            // })
-            //     .then((result) => {
-            //         return result.json();
-            //     })
-            //     .then((result) => {
-            //         if(!result.error){
-            //             location.href = "/";
-            //         } else {
-            //             this.setState({error : true});
-            //             // this.state.error = true;
-            //         }
-            //     });
+            body = JSON.stringify(body);
+            fetch("/register", {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: body,
+            })
+                .then((result) => {
+                    return result.json();
+                })
+                .then((result) => {
+                    if(!result.error){
+                        location.href = "/";
+                    } else {
+                        this.setState({error : true});
+                        // this.state.error = true;
+                    }
+                });
         } else {
             console.log('something is missing');
         }
@@ -64,31 +64,32 @@ class Registration extends Component {
 
 
     async checkInputFields() {
-        let error = false;
-        // this.setState({errorData: {
-        //     firstName: false,
-        //     lastName: false,
-        //     email: false,
-        //     password: false,
-        // }});
-        // this.setState({error: false});
-        console.log("state", this.state);
-        this.setState({ errorData : 
-            {firstName : this.state.firstName.length < 2 ? true : false,
-                lastName : this.state.lastName.length < 2 ? true : false,
-                email : this.state.email.length < 4 ? true : false,
-                password : this.state.password.length < 8 ? true : false}});
-        // this.forceUpdate();
-        console.log("await errordata", await this.state.errorData);
+        // let error = false;
+        // // this.setState({errorData: {
+        // //     firstName: false,
+        // //     lastName: false,
+        // //     email: false,
+        // //     password: false,
+        // // }});
+        // // this.setState({error: false});
+        // console.log("state", this.state);
+        // this.setState({ errorData : 
+        //     {firstName : this.state.firstName.length < 2 ? true : false,
+        //         lastName : this.state.lastName.length < 2 ? true : false,
+        //         email : this.state.email.length < 4 ? true : false,
+        //         password : this.state.password.length < 8 ? true : false}});
+        // // this.forceUpdate();
+        // console.log("await errordata", await this.state.errorData);
 
-        for (let item in this.state.errorData){
-            // console.log(this.state.errorData[item], item);
-            if (this.state.errorData[item]) {
-                return true;
+        // for (let item in this.state.errorData){
+        //     // console.log(this.state.errorData[item], item);
+        //     if (this.state.errorData[item]) {
+        //         return true;
 
-            }
-        } 
-        console.log(error);
+        //     }
+        // } 
+        // console.log(error);
+        // return false;
         return false;
     }
 
@@ -114,7 +115,7 @@ class Registration extends Component {
 
                         <input type="submit" value="Register"></input>
 
-                        <p>Already a member? <Link to="/login">Log in here!</Link></p>
+                        <p>Already a member? <Link to="/login" className="big">Log in here!</Link></p>
 
                         {this.state.error && <span className="error big">There was an error while trying to send the data. Please try again!</span>}
                     </form>

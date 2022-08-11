@@ -1,18 +1,31 @@
-body {
-    background-color: ghostwhite;
+* {
     margin: 0;
     padding: 0;
-    display: flex;
+    box-sizing: border-box;
+    overflow: hidden;
+}
 
-    justify-content: center;
-    align-items: center;
+body {
+    background-color: ghostwhite;
     min-height: 100vh;
-    width: 100vw;
-    /* background-image: url("/bg1.jpg") ;
+    width: 100% ;
+    background-image: url("/bg.jpg") ;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    color: white; */
+    color: white;
+
+}
+
+main {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 nav {
@@ -28,17 +41,46 @@ h1, h2, h3 {
 font-family: 'Major Mono Display', monospace;
 }
 
+p, span, li, form, label, input {
+    font-family: 'Raleway', sans-serif;
+    color: black;
+}
+
 .site-headline {
     position: fixed;
     top: 0;
     left: 0;
     text-orientation: upright;
     writing-mode: vertical-lr;
+    padding: 1rem;
+    margin: 0;
+    font-size: 4.5vh;
+    height: 100vh;
+    background-color: rgba(26, 26, 26, 0.7);
+    color: white;
+    display: flex;
+    justify-content: center;
+    border-right: 5px solid rgb(0, 100, 158);
+
+
+}
+
+.component {
+    display: flex;
+    flex-direction: row;
+    border: 2px solid black;
+
 }
 
 .component-headline {
     text-orientation: upright;
     writing-mode: vertical-lr;
+    padding: 1rem;
+    background-color: rgba(26, 26, 26, 0.7);
+    color: white;
+    border-right: 5px solid rgb(0, 100, 158);
+    display: flex;
+    justify-content: center;
 }
 
 .component-content {
@@ -46,11 +88,13 @@ font-family: 'Major Mono Display', monospace;
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    padding: 1rem;
+    background-color: rgb(241, 241, 241);
     /* border: 1px solid rgb(255, 0, 0); */
 }
 
 .profile-image {
-    border: 1px solid black;
+    /* border: 1px solid black; */
 
     display: flex;
     justify-content: center;
@@ -58,6 +102,9 @@ font-family: 'Major Mono Display', monospace;
     font-size: 2rem;
     user-select: none;
     cursor: pointer;
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
 }
 
 nav .profile-image {
@@ -69,15 +116,16 @@ nav .profile-image {
 }
 
 section {
-    margin-top: 120px;
-    /* border: 1px solid black; */
+
+    height: 100%;
+
 }
 
 .profile .profile-image {
     top: 20px;
     right: 20px;
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 300px;
 
 }
 
@@ -100,6 +148,23 @@ section {
     background-color: ghostwhite;
 }
 
+label {
+    font-weight: 600;
+}
+
+input {
+    height: 2rem;
+    margin: 0.25rem 0 0.75rem 0;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: 2px solid rgb(0, 100, 158);
+    /* background-color: rgb(240, 240, 240); */
+
+}
+
 .error {
     color: rgb(185, 0, 0);
 }
@@ -109,17 +174,12 @@ section {
 }
 
 .big {
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    font-weight: 600;
 }
 
-.component {
-    display: flex;
-    flex-direction: row;
-}
-
-.registration {
-    width: 500px;
-    /* border: 1px solid rgb(42, 0, 158); */
+.info {
+    line-height: 1.5rem;
 }
 
 .form {
@@ -128,4 +188,40 @@ section {
     justify-content: space-between;
     width: 100%;
     height: 100%;
+}
+
+input[type=submit] {
+    margin: 0.75rem 0;
+    border: 0px solid rgb(0, 100, 158);
+    height: 2rem;
+    width: 100%;
+    background-color: rgb(107, 107, 107);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;;
+    font-weight: 600;
+}
+
+.registration {
+    width: 500px;
+    /* border: 1px solid rgb(42, 0, 158); */
+}
+
+.login {
+    width: 500px;
+}
+
+.profile {
+    width: 500px;
+    height: 300px
+}
+
+.uploader-background {
+    position: fixed;
+    height: 20%;
+    width: 20%;
+    background-color: rgba(26, 26, 26, 0.7);
+
 }

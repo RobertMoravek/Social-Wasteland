@@ -16,14 +16,19 @@ export default class Profile extends Component {
     render() {
         // console.log("Props in Profile:", this.props);
         return (
-            <div className="profile">
-                <ProfilePic
-                    openProfilePicUploader={this.props.openProfilePicUploader}
-                    imgFromApp={this.props.imgFromApp}
-                    firstNameFromApp={this.props.firstNameFromApp}
-                    lastNameFromApp={this.props.lastNameFromApp}
-                />
-                <BioEditor bio={this.props.bio} giveBackBio={this.props.giveBackBio}/>
+            <div className="profile component">
+                <h2 className="component-headline">profile</h2>
+                <div className="component-content">
+                    <ProfilePic
+                        openProfilePicUploader={this.props.openProfilePicUploader}
+                        imgFromApp={this.props.imgFromApp}
+                        firstNameFromApp={this.props.firstNameFromApp}
+                        lastNameFromApp={this.props.lastNameFromApp}
+                        
+                    />
+                    <BioEditor bio={this.props.bio} giveBackBio={this.props.giveBackBio}/>
+                </div>
+                
 
             </div>
 

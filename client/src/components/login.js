@@ -70,8 +70,8 @@ class Login extends Component {
 
                         <input type="submit" value="Login"></input>
 
-                        <p>Forgot your password? <Link to="/forgotpassword">Change it here!</Link></p>
-                        <p>Not yet member? <Link to="/">Register here!</Link></p>
+                        <p className="info">Forgot your password? <Link to="/forgotpassword" className="big">Change it here!</Link></p>
+                        <p className="info">Not yet member? <Link to="/" className="big">Register here!</Link></p>
 
                         {this.state.error && <span className="error big">There was an error while trying to send the data. Please try again!</span>}
                     </form>

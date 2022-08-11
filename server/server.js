@@ -171,6 +171,33 @@ app.post("/updatebio", async (req, res) => {
     res.json((await (db.updateBio(req.session.userId, req.body.newBio))).rows[0]);
 });
 
+app.get("/getsinglefriendship/:id", async (req, res) => {
+    //Returns the accepted
+    res.json(await db.getSingleFriendship(req.session.userId, req.params.id));
+});
+
+app.get("/getallfriendships/", async (req, res) => {
+    //Returns the accepted
+    res.json(await db.getAllFriendships(req.session.userId));
+});
+
+app.post("/makefriendshiprequest", async (req, res) => {
+    // Returns the id of the friendship
+    res.json((await db.makeFriendshipRequest(req.session.userId, req.body.otherUserId)));
+});
+
+app.post("/cancelfriendship", async (req, res) => {
+    // Returns the id of the friendship
+    res.json(await db.cancelFriendship(req.session.userId, req.body.otherUserId));
+});
+
+app.post("/acceptfriendship", async (req, res) => {
+    // Returns the id of the friendship
+    res.json(await db.acceptFriendship(req.session.userId, req.body.otherUserId));
+});
+
+
+
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });

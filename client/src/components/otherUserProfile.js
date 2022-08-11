@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 import {Redirect} from  "react-router-dom";
-import Profile from "./profile.js";
+import FriendshipButton from "./friendshipButton";
 import { useHistory } from "react-router-dom";
 
 
@@ -11,15 +11,12 @@ export default function ShowOtherUsers(userId) {
     let [userInfo, setUserInfo] = useState({});
 
     useEffect (() => {
-        console.log("userId from app", userId.userId);
-        console.log("id from url", id);
         if ( id == userId.userId) {
             history.push("/");
         } else {
             fetch(`/loadotheruserinfo/${id}`)
                 .then((response) => response.json())
                 .then((result) => {
-                    console.log(result);
                     if (!result.error) {
                         if (userId.userId != "") {
                             if(result.rowCount > 0){
@@ -44,11 +41,12 @@ export default function ShowOtherUsers(userId) {
     return (
         <>
             <div className="user">
-                <img src={userInfo.profile_pic_url} alt="" />
+                <img src={userInfo.profile_pic_url || "../defaultprofile.jpg"} alt="" className="profile-image"/>
                 <p>
                     {userInfo.firstname} {userInfo.lastname}
                 </p>
                 <p>{userInfo.bio}</p>
+                <FriendshipButton/>
             </div>
             
         </>
