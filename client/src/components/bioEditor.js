@@ -68,7 +68,7 @@ export default class BioEditor extends Component {
                     </>
                 ) : this.props.bio ? (
                     <>
-                        <div className="bioText">{this.props.bio}</div>
+                        <p className="bioText">{this.props.bio}</p>
                         <button onClick={this.toggleEditor}>
                             Edit your bio
                         </button>

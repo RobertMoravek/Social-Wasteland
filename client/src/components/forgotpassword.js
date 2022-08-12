@@ -28,7 +28,7 @@ export class ForgotPassword extends Component {
                             onSubmit={this.submitForm}
                             className="form"
                         >
-                            <label htmlFor="email">Your e-mail adress</label>
+                            <label htmlFor="email">Your E-Mail:</label>
                             <input type="email" name="email" id="email"  onChange={this.changeInputInConstructor}/>
                             <input type="submit" value="Request new password" />
                         </form>
@@ -44,6 +44,7 @@ export class ForgotPassword extends Component {
                     </div>
                     <div className="component-content">
                         <form name="resetPasswordCode" onSubmit={this.submitForm} className="form">
+                            <p className="extra-margin">A reset code was sent to your E-Mail adress. Please enter it here.</p>
                             <label htmlFor="reset-code">Your reset code</label>
                             <input type="text" name="resetCode" id="reset-code" maxLength={6}  onChange={this.changeInputInConstructor} autoComplete="off" />
                             <input type="submit" value="Submit code" />
@@ -77,8 +78,10 @@ export class ForgotPassword extends Component {
                         <h2>reset</h2>
                     </div>
                     <div className="component-content">
-                        <h3>You successfully changed your password!</h3>
-                        <Link to="/login">Now go and use it to login.</Link>
+                        <div className="">
+                            <p className="big extra-margin">You successfully changed your password!</p>
+                            <Link to="/login" className="big extra-margin">Now go and use it to login.</Link>
+                        </div>
                     </div>
                 </div>
             );

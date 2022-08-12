@@ -41,6 +41,10 @@ h1, h2, h3 {
 font-family: 'Major Mono Display', monospace;
 }
 
+h3 {
+    margin: 1rem;
+}
+
 p, span, li, form, label, input {
     font-family: 'Raleway', sans-serif;
     color: black;
@@ -85,7 +89,6 @@ p, span, li, form, label, input {
 
 .component-content {
     display: flex;
-    flex-direction: column;
     align-items: flex-start;
     width: 100%;
     padding: 1rem;
@@ -135,7 +138,7 @@ section {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
+    width: 400px;
     display: flex;
     justify-content: baseline;
     align-items: center;
@@ -146,6 +149,17 @@ section {
     transition: 0.5s;
     margin-top: 0.25rem;
     background-color: ghostwhite;
+    padding: 1rem;
+}
+
+.uploadForm input[type=submit] {
+    width: 300px;
+}
+
+.uploadForm input {
+    width: 350px;
+    height: 2.5rem;
+    /* border: 1px solid black */
 }
 
 label {
@@ -180,6 +194,10 @@ input:focus {
 
 .info {
     line-height: 1.5rem;
+}
+
+.extra-margin {
+    margin: 1rem 0;
 }
 
 .form {
@@ -220,8 +238,12 @@ input[type=submit] {
 
 .uploader-background {
     position: fixed;
-    height: 20%;
-    width: 20%;
+    height: 100%;
+    width: 100%;
     background-color: rgba(26, 26, 26, 0.7);
 
+}
+
+.component-content.profile {
+    padding: 0;
 }

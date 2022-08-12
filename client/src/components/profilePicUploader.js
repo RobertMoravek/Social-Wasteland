@@ -47,12 +47,11 @@ export class ProfilePicUploader extends Component {
 
     render() {
         return (
-            <div className="uploader-background">
-                <form encType="multipart/form-data" className="uploadForm" onSubmit={this.submitForm}>
+            <div className="uploader-background" onClick={this.props.openProfilePicUploader} >
+                <form encType="multipart/form-data" className="uploadForm" onClick={(e) => {e.stopPropagation(); e.nativeEvent.stopImmediatePropagation();}} onSubmit={this.submitForm}>
                     <h3 className="uploadHeadline" id="uploadExpander">
                         upload an image<span className="arrowDown"></span>
                     </h3>
-                    <label htmlFor="uploadInput">Image</label>
                     <input type="file" name="uploadInput" id="uploadInput" />
                     <input type="submit" value="Upload" className="submitButton" />
                     <div className="status green"></div>

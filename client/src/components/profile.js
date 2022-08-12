@@ -6,10 +6,18 @@ export default class Profile extends Component {
     constructor(props){
         super(props);
         this.state = {
-
+            firstname : "",
+            lasstname : "",
         };
+    
+        this.lowerCaseNames = this.lowerCaseNames.bind(this);
     }
 
+    lowerCaseNames () {
+        let first = this.props.firstNameFromApp.toLowerCase();
+        let last = (this.props.lastNameFromApp).toLowerCase();
+        return `${first} ${last}`;
+    }
 
 
     
@@ -18,7 +26,7 @@ export default class Profile extends Component {
         return (
             <div className="profile component">
                 <h2 className="component-headline">profile</h2>
-                <div className="component-content">
+                <div className="component-content profile">
                     <ProfilePic
                         openProfilePicUploader={this.props.openProfilePicUploader}
                         imgFromApp={this.props.imgFromApp}
@@ -26,6 +34,7 @@ export default class Profile extends Component {
                         lastNameFromApp={this.props.lastNameFromApp}
                         
                     />
+                    <h3>{this.lowerCaseNames()}</h3>
                     <BioEditor bio={this.props.bio} giveBackBio={this.props.giveBackBio}/>
                 </div>
                 

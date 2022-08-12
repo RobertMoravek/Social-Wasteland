@@ -29,7 +29,7 @@ export class App extends Component {
         this.giveBackBio = this.giveBackBio.bind(this);
     }
 
-    openProfilePicUploader() {
+    openProfilePicUploader(e) {
         this.setState({isProfileUploaderVisible: !this.state.isProfileUploaderVisible});
     }
 
@@ -83,6 +83,7 @@ export class App extends Component {
                     {this.state.isProfileUploaderVisible && (
                         <ProfilePicUploader
                             getUpdatedProfileUrl={this.getUpdatedProfileUrl}
+                            openProfilePicUploader={this.openProfilePicUploader}
                         />
                     )}
                 </nav>
