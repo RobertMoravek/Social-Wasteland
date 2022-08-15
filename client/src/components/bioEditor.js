@@ -17,17 +17,26 @@ export default class BioEditor extends Component {
 
     toggleEditor() {
         this.setState({ isEditorOpen: !this.state.isEditorOpen });
+        console.log(this.state.newBio);
     }
 
     changeNewBio(e) {
         this.setState({ newBio: e.currentTarget.value });
-        // console.log(this.state.newBio);
+
     }
 
     saveNewBio() {
-        let body = {
-            newBio: this.state.newBio,
-        };
+        let body ="";
+        if (this.state.newBio == ""){
+            body = {
+                newBio: this.props.bio,
+            };
+        } else {
+            body = {
+                newBio: this.state.newBio,
+            };
+        }
+
         body = JSON.stringify(body);
         fetch("/updatebio", {
             method: "post",
@@ -60,11 +69,11 @@ export default class BioEditor extends Component {
                             defaultValue={this.props.bio}
                             onChange={this.changeNewBio}
                         ></textarea>
-                        <button
-                            onClick={this.saveNewBio} id="save">
-                            Save your bio
-                        </button>
-                        <button onClick={this.toggleEditor}>Cancel</button>
+                        <div className="buttons">
+                            <button onClick={this.saveNewBio} id="save">Save your bio</button>
+                            <button onClick={this.toggleEditor}>Cancel</button>
+
+                        </div>
                     </>
                 ) : this.props.bio ? (
                     <>

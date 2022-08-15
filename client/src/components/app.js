@@ -73,21 +73,22 @@ export class App extends Component {
     render() {
         return (
             <>
-                <nav>
-                    <h1 className="site-headline">the social wasteland</h1>
-                    <ProfilePic
+                
+                <h1 className="site-headline">the social wasteland</h1>
+                <ProfilePic
+                    openProfilePicUploader={this.openProfilePicUploader}
+                    imgFromApp={this.state.profilePicUrl}
+                    firstNameFromApp={this.state.firstName}
+                    lastNameFromApp={this.state.lastName}
+                    classmenu="menu-profile-image"
+                />
+                {this.state.isProfileUploaderVisible && (
+                    <ProfilePicUploader
+                        getUpdatedProfileUrl={this.getUpdatedProfileUrl}
                         openProfilePicUploader={this.openProfilePicUploader}
-                        imgFromApp={this.state.profilePicUrl}
-                        firstNameFromApp={this.state.firstName}
-                        lastNameFromApp={this.state.lastName}
                     />
-                    {this.state.isProfileUploaderVisible && (
-                        <ProfilePicUploader
-                            getUpdatedProfileUrl={this.getUpdatedProfileUrl}
-                            openProfilePicUploader={this.openProfilePicUploader}
-                        />
-                    )}
-                </nav>
+                )}
+                
                 <section>
                     <BrowserRouter>
                         <Route exact path="/">
@@ -109,7 +110,7 @@ export class App extends Component {
                             <Friends />
                         </Route>
                         <Route exact path="/users/:id">
-                            <ShowOtherUsers userId={this.state.id} />
+                            <ShowOtherUsers />
                         </Route>
                         {/* <Redirect from="*" to="/" /> */}
                     </BrowserRouter>

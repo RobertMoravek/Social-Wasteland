@@ -2,14 +2,19 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveFriendsSlice, acceptFriendshipSlice, denyFriendshipSlice } from "./redux/friends/slice.js";
+import FriendshipButton from "./friendshipButton.js";
 
 export default function Friends() {
     const dispatch = useDispatch();
+
     let friends = useSelector(
-        (state) => {return state.friends;}
+        (state) => state.friends.filter(friend => friend.accepted)
     );
-    useEffect(() => {
-        
+    let friendRequests = useSelector(
+        (state) => state.friends.filter(friend => !friend.accepted)
+    );
+    
+    useEffect(() => {    
         (async () => {
             const res = await fetch("/getallfriends");
             const data = await res.json();
@@ -39,20 +44,62 @@ export default function Friends() {
     };
     
     console.log("friends before return", friends);
+
+    function lowerCaseNames (first, last) {
+        first = first.toLowerCase();
+        last = last.toLowerCase();
+        return `${first} ${last}`;
+    }
+
+    
     return (
-        <div className="userSearchResults">
-            <h2>your friends</h2>
-            {friends.map((friend) => (
-                <div key={friend.id}>
-                    <Link to={"/users/" + friend.id}>
-                        <img src={friend.profile_pic_url} alt="" />
-                        <p>
-                            {friend.firstname} {friend.lastname}
-                        </p>
-                    </Link>
+        <>
+            <div className="component ">
+                <h2 className="component-headline">friends</h2>
+                <div className="component-content friends">
+
+                    <h2 className="subhl">your friends</h2>
+                    {friends.map((friend) => (
+                        <>
+                            <div key={friend.id} >
+                                <Link to={"/users/" + friend.id} className="single-profile">
+                                    <img
+                                        src={friend.profile_pic_url}
+                                        alt={friend.firstname}
+                                        className="other-profile-image profile-image"
+                                    />
+                                    <div className="user-info">
+                                        <h3>{lowerCaseNames(friend.firstname, friend.lastname)}</h3>
+                                        <p>{friend.bio}</p>
+                                    </div>
+                                </Link>
+                            </div>
+                            <FriendshipButton id={friend.id} />
+                        </>
+                    ))}
+
+
+                    <h2>your friend requests</h2>
+                    {friendRequests.map((friend) => (
+                        <div key={friend.id}>
+                            <Link to={"/users/" + friend.id}>
+                                <img
+                                    src={friend.profile_pic_url}
+                                    alt={friend.firstname}
+                                    className="other-profile-image profile-image"
+                                />
+                                <p>
+                                    {friend.firstname} {friend.lastname}
+                                </p>
+                                <p>{friend.bio}</p>
+                            </Link>
+                            <FriendshipButton id={friend.id} />
+                        </div>
+                    ))}
+
                 </div>
-            ))}
-        </div>
+            </div>
+        </>
     );
     
 }

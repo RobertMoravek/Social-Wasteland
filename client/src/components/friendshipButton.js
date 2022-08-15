@@ -2,30 +2,39 @@ import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 
 
-export default function FriendshipButton(otherUserId) {
-    // const history = useHistory();
-    const { id } = useParams();
+export default function FriendshipButton(id) {
+    console.log("id", typeof id, id);
+    if (Object.keys(id).length === 0) {
+        id = useParams().id;
+    } else {
+        id = id.id;
+    }
+    console.log("id", typeof id, id);
+
     let [buttonInfo, setButtonInfo] = useState({});
    
     
     useEffect (() => {
+
         fetchFriendshipButton();
+
     }, [id]);
 
 
     function fetchFriendshipButton() {
+        console.log('fetching friendship status');
         fetch(`/getsinglefriendship/${id}`)
             .then((response) => response.json())
             .then((result) => {
                 console.log("getsinglefriendship", result);
                 if (result.rows.length == 0) {
-                    setButtonInfo({text: "Add as friend", url: "/makefriendshiprequest"});
+                    setButtonInfo({text: "Add as friend ✅", url: "/makefriendshiprequest"});
                 } else if (result.rows[0].accepted) {
-                    setButtonInfo({text: "Cancel friendship", url: "/cancelfriendship"});
+                    setButtonInfo({text: "End friendship ❌", url: "/cancelfriendship"});
                 } else if (result.rows[0].recipient_id == id && !result.rows[0].accepted) {
-                    setButtonInfo({text: "Delete friend request", url: "/cancelfriendship"});
+                    setButtonInfo({text: "Delete friend request ❌", url: "/cancelfriendship"});
                 } else if (result.rows[0].sender_id == id && !result.rows[0].accepted) {
-                    setButtonInfo({text: "Accept friend request", url: "/acceptfriendship"});
+                    setButtonInfo({text: "Accept friend request ✅", url: "/acceptfriendship"});
                 }
             });
     }
@@ -59,7 +68,7 @@ export default function FriendshipButton(otherUserId) {
 
 
     return (
-        <button onClick={useFriendshipButton}>{buttonInfo.text}</button>
+        <button onClick={useFriendshipButton} className="friendship-button">{buttonInfo.text}</button>
     );
 
 }
