@@ -6,6 +6,7 @@ import {ProfilePicUploader} from "./profilePicUploader.js";
 import Profile from "./profile.js";
 import FindUsers from "./findUsers.js";
 import ShowOtherUsers from "./otherUserProfile.js";
+import Friends from "./friends.js";
 
 // import { Link } from "react-router-dom";
 
@@ -103,6 +104,9 @@ export class App extends Component {
                         </Route>
                         <Route exact path="/users">
                             <FindUsers />
+                        </Route>
+                        <Route exact path="/friends">
+                            <Friends />
                         </Route>
                         <Route exact path="/users/:id">
                             <ShowOtherUsers userId={this.state.id} />

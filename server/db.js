@@ -118,7 +118,9 @@ module.exports.getSingleFriendship = (myId, otherId) => {
 module.exports.getAllFriendships = (myId) => {
     return db.query(
         `
-        SELECT * FROM friendships WHERE sender_id=$1 OR recipient_id=$1;`,
+        SELECT users.id, firstname, lastname, accepted, profile_pic_url FROM users JOIN friendships ON (accepted=true AND recipient_id=$1 AND users.id=friendships.sender_id)
+OR (accepted=true AND sender_id=$1 AND users.id=friendships.recipient_id)
+OR (accepted=false AND recipient_id=$1 AND users.id=friendships.sender_id)`,
         [myId]
     );
 };

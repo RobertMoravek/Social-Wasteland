@@ -176,8 +176,9 @@ app.get("/getsinglefriendship/:id", async (req, res) => {
     res.json(await db.getSingleFriendship(req.session.userId, req.params.id));
 });
 
-app.get("/getallfriendships/", async (req, res) => {
+app.get("/getallfriends/", async (req, res) => {
     //Returns the accepted
+    console.log('server: getting allfriends');
     res.json(await db.getAllFriendships(req.session.userId));
 });
 
