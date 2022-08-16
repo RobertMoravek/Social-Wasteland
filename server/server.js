@@ -182,9 +182,15 @@ app.get("/getallfriends/", async (req, res) => {
     res.json(await db.getAllFriendships(req.session.userId));
 });
 
+app.get("/getnumofrequests/", async (req, res) => {
+    //Returns the accepted
+    console.log('server: getting allfriends');
+    res.json(await db.getNumOfRequests(req.session.userId));
+});
+
 app.post("/makefriendshiprequest", async (req, res) => {
     // Returns the id of the friendship
-    res.json((await db.makeFriendshipRequest(req.session.userId, req.body.otherUserId)));
+    res.json((await db.makeFriendshipRequest(req.body.userId, req.body.otherUserId)));
 });
 
 app.post("/cancelfriendship", async (req, res) => {

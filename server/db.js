@@ -125,6 +125,14 @@ OR (accepted=false AND recipient_id=$1 AND users.id=friendships.sender_id)`,
     );
 };
 
+module.exports.getNumOfRequests = (myId) => {
+    return db.query(
+        `
+        SELECT COUNT(*) FROM friendships WHERE accepted=false AND recipient_id=$1`,
+        [myId]
+    );
+};
+
 
 module.exports.makeFriendshipRequest = (myId, otherId) => {
     console.log(myId, otherId);

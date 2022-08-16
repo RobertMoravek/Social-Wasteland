@@ -164,6 +164,6 @@ export class ForgotPassword extends Component {
     }
 
     render() {
-        return <div>{this.currentView()}</div>;
+        return <>{this.currentView()}</>;
     }
 }

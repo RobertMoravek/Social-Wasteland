@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 
 
 export default function FriendshipButton(id) {
-    console.log("id", typeof id, id);
+
     if (Object.keys(id).length === 0) {
         id = useParams().id;
     } else {
         id = id.id;
     }
-    console.log("id", typeof id, id);
+
 
     let [buttonInfo, setButtonInfo] = useState({});
    
@@ -26,7 +26,6 @@ export default function FriendshipButton(id) {
         fetch(`/getsinglefriendship/${id}`)
             .then((response) => response.json())
             .then((result) => {
-                console.log("getsinglefriendship", result);
                 if (result.rows.length == 0) {
                     setButtonInfo({text: "Add as friend ✅", url: "/makefriendshiprequest"});
                 } else if (result.rows[0].accepted) {

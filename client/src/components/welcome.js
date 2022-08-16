@@ -12,17 +12,19 @@ class Welcome extends Component {
         return (
             <>
                 <h1 className="site-headline">the social wasteland</h1>
-                <BrowserRouter>
-                    <Route exact path="/">
-                        <Registration/>
-                    </Route>
-                    <Route exact path="/login">
-                        <Login/>
-                    </Route>
-                    <Route exact path="/forgotpassword">
-                        <ForgotPassword/>
-                    </Route>
-                </BrowserRouter>
+                <section>
+                    <BrowserRouter>
+                        <Route exact path="/">
+                            <Registration />
+                        </Route>
+                        <Route exact path="/login">
+                            <Login />
+                        </Route>
+                        <Route exact path="/forgotpassword">
+                            <ForgotPassword />
+                        </Route>
+                    </BrowserRouter>
+                </section>
             </>
         );
     }
