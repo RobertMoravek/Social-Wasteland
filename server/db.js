@@ -327,3 +327,11 @@ module.exports.getLastChats = () => {
         []
     );
 };
+
+module.exports.getListOfUsers = (inputArray) => {
+    return db.query(
+        `
+        SELECT id, firstname, lastname, profile_pic_url FROM users WHERE id = ANY($1)`,
+        [inputArray]
+    );
+};

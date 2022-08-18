@@ -15,6 +15,11 @@ import FindUsers from "./findUsers.js";
 import ShowOtherUsers from "./otherUserProfile.js";
 import Friends from "./friends.js";
 import Chat from "./chat/chat.js";
+import ChatOpener from "./chat/chatOpener.js";
+import MenuOpener from "./menu/menuOpener.js";
+import Menu from "./menu/menu.js";
+import OnlineUsersOpener from "./onlineusers/onlineusersopener.js";
+import OnlineUsers from "./onlineusers/onlineusers.js";
 
 // import { Link } from "react-router-dom";
 
@@ -23,7 +28,9 @@ export class App extends Component {
         super();
         this.state = {
             isProfileUploaderVisible: false,
-            isChatVisible: true,
+            isChatVisible: false,
+            isMenuVisible: false,
+            isOnlineUsersVisible: false,
             firstName: "",
             lastName: "",
             email: "",
@@ -33,10 +40,15 @@ export class App extends Component {
         };
 
         this.openProfilePicUploader = this.openProfilePicUploader.bind(this);
+        this.toggleMenuVisibility = this.toggleMenuVisibility.bind(this);
+        this.toggleOnlineUsersVisibility =
+            this.toggleOnlineUsersVisibility.bind(this);
         this.toggleChatWindowVisibility =
             this.toggleChatWindowVisibility.bind(this);
         this.getUpdatedProfileUrl = this.getUpdatedProfileUrl.bind(this);
         this.giveBackBio = this.giveBackBio.bind(this);
+        this.closeChat = this.closeChat.bind(this);
+        this.closeOnlineUsers = this.closeOnlineUsers.bind(this);
     }
 
     openProfilePicUploader(e) {
@@ -48,6 +60,31 @@ export class App extends Component {
     toggleChatWindowVisibility(e) {
         this.setState({
             isChatVisible: !this.state.isChatVisible,
+        });
+    }
+
+    toggleMenuVisibility(e) {
+        this.setState({
+            isMenuVisible: !this.state.isMenuVisible,
+        });
+    }
+
+    toggleOnlineUsersVisibility(e) {
+        this.setState({
+            isOnlineUsersVisible: !this.state.isOnlineUsersVisible,
+        });
+    }
+
+    closeOnlineUsers() {
+        this.setState({
+            isOnlineUsersVisible: false,
+        });
+    }
+
+    closeChat() {
+        console.log('trying to close chat');
+        this.setState({
+            isChatVisible: false,
         });
     }
 
@@ -91,6 +128,8 @@ export class App extends Component {
             <>
                 <h1 className="site-headline">the social wasteland</h1>
 
+                <MenuOpener toggleMenuVisibility={this.toggleMenuVisibility} />
+
                 {this.state.isProfileUploaderVisible && (
                     <ProfilePicUploader
                         getUpdatedProfileUrl={this.getUpdatedProfileUrl}
@@ -105,7 +144,12 @@ export class App extends Component {
                         }
                     />
                 )}
-
+                <ChatOpener
+                    toggleChatWindowVisibility={this.toggleChatWindowVisibility} closeOnlineUsers={this.closeOnlineUsers}
+                />
+                <OnlineUsersOpener
+                    toggleOnlineUsersVisibility={this.toggleOnlineUsersVisibility} closeChat={this.closeChat}
+                />
                 <section>
                     <BrowserRouter>
                         <ProfilePic
@@ -115,6 +159,9 @@ export class App extends Component {
                             lastNameFromApp={this.state.lastName}
                             classmenu="menu-profile-image"
                         />
+
+                        {this.state.isMenuVisible && <Menu />}
+                        {this.state.isOnlineUsersVisible && <OnlineUsers />}
 
                         <Switch>
                             <Route exact path="/">
@@ -142,7 +189,18 @@ export class App extends Component {
                                 <ShowOtherUsers />
                             </Route>
 
-                            <Redirect from="*" to="/" />
+                            <Route
+                                render={({ location }) =>
+                                    //This array includes pages on which user will
+                                    // not be redirected
+                                    ["/logout"].includes(location.pathname) ? (
+                                        (window.location.href =
+                                            "http://localhost:3000/logout")
+                                    ) : (
+                                        <Redirect to="/" />
+                                    )
+                                }
+                            />
                         </Switch>
                     </BrowserRouter>
                 </section>

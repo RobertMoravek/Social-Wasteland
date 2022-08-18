@@ -14,6 +14,7 @@ const io = require("socket.io")(server, {
     },
 });
 
+const onlineUsers = {};
 
 app.use(compression());
 
@@ -87,7 +88,7 @@ app.get("/user/id.json", function (req, res) {
 
 app.get("/logout", (req, res) => {
     req.session.userId = null;
-    res.redirect("/");
+    res.redirect("/login");
 });
 
 app.post("/checkandsendmailfornewpassword", (req, res) => {
@@ -189,19 +190,19 @@ app.get("/getsinglefriendship/:id", async (req, res) => {
 
 app.get("/getallfriends/", async (req, res) => {
     //Returns the accepted
-    console.log('server: getting allfriends');
+
     res.json(await db.getAllFriendships(req.session.userId));
 });
 
 app.get("/getnumofrequests/", async (req, res) => {
     //Returns the accepted
-    console.log('server: getting allfriends');
+
     res.json(await db.getNumOfRequests(req.session.userId));
 });
 
 app.post("/makefriendshiprequest", async (req, res) => {
     // Returns the id of the friendship
-    res.json((await db.makeFriendshipRequest(req.body.userId, req.body.otherUserId)));
+    res.json((await db.makeFriendshipRequest(req.session.userId, req.body.otherUserId)));
 });
 
 app.post("/cancelfriendship", async (req, res) => {
@@ -231,12 +232,30 @@ io.on("connection", async function (socket) {
     }
 
     const userId = socket.request.session.userId;
+
+    onlineUsers[userId] = (function () {
+        if (!onlineUsers[userId]) {
+            return [socket.id];
+        } else {
+            return [...onlineUsers[userId], socket.id];
+        }
+    })();
+
+    
+    async function emitOnlineUsers() {
+        console.log('running emitOnlineUsers');
+        io.emit("onlineusers", (await db.getListOfUsers(Object.keys(onlineUsers))).rows);
+    }    
+    emitOnlineUsers();
+    
+    console.log(onlineUsers);
+
     console.log(
         `User with id: ${userId} and socket id ${socket.id}, just connected!`
     );
     
     let lastChats = await db.getLastChats();
-    console.log(lastChats);
+    // console.log(lastChats);
 
     socket.emit("last-10-messages", lastChats.rows);
 
@@ -244,9 +263,9 @@ io.on("connection", async function (socket) {
 
         let newMessageId = await(db.addNewChatMessage(socket.request.session.userId, message));
         let userInfo = await (db.getUserInfo(socket.request.session.userId));
-        console.log("message", message);
-        console.log('newMessageId', newMessageId.rows[0].id);
-        console.log('userInfo', userInfo.rows[0]);
+        // console.log("message", message);
+        // console.log('newMessageId', newMessageId.rows[0].id);
+        // console.log('userInfo', userInfo.rows[0]);
         io.emit("add-new-message", [
             {
                 id: newMessageId.rows[0].id,
@@ -257,5 +276,12 @@ io.on("connection", async function (socket) {
                 sent_at: newMessageId.rows[0].sent_at
             },
         ]);
+    });
+
+    socket.on("disconnect", () => {
+        onlineUsers[userId] = onlineUsers[userId].filter(id => id!=socket.id );
+        onlineUsers[userId].length == 0 && delete onlineUsers[userId]; 
+        console.log(onlineUsers);
+        emitOnlineUsers();
     });
 });

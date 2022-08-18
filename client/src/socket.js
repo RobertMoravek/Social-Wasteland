@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
-import { receiveInitialChatMessages, receiveNewChatMessage } from "./components/redux/chat/slice.js";
 import { useSelector } from "react-redux";
+import { receiveInitialChatMessages, receiveNewChatMessage } from "./components/redux/chat/slice.js";
+import { receiveOnlineUsersSlice } from "./components/redux/onlineusers/slice.js";
 
 export let socket;
 
@@ -17,5 +18,11 @@ export const init = (store) => {
             console.log('getting new message', message);
             store.dispatch(receiveNewChatMessage(message[0]));
         });
+        
+        socket.on("onlineusers", (users) => {
+            console.log('getting online users', users);
+            store.dispatch(receiveOnlineUsersSlice(users));
+        });
+
     }
 };

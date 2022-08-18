@@ -3,6 +3,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = () => ({
+    devtool: "eval-source-map",
     entry: [
         "@babel/polyfill",
         path.join(__dirname, "client", "style.css"),
