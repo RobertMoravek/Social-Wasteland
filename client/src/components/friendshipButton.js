@@ -22,7 +22,7 @@ export default function FriendshipButton(id) {
 
 
     function fetchFriendshipButton() {
-        console.log('fetching friendship status');
+
         fetch(`/getsinglefriendship/${id}`)
             .then((response) => response.json())
             .then((result) => {

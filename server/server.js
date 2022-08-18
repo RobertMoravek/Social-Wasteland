@@ -7,7 +7,12 @@ const cryptoRandomString = require("crypto-random-string");
 const sendCode = require("./ses.js");
 const { uploader } = require("./middleware.js");
 const s3 = require("./S3.js");
-
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) => {
+        callback(null, req.headers.referer.startsWith("http://localhost:3000"));
+    },
+});
 
 
 app.use(compression());
@@ -25,12 +30,18 @@ const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 const cookieSession = require("cookie-session");
-app.use(
-    cookieSession({
-        secret: sessionSecret,
-        maxAge: undefined,
-    })
-);
+app.use(compression());
+const cookieSessionMiddleware = cookieSession({
+    secret:
+        process.env.SESSION_SECRET || require("../secrets.json").SESSION_SECRET,
+    maxAge: 1000 * 60 * 60 * 24 * 14, // 14 days
+    sameSite: true,
+});
+app.use(cookieSessionMiddleware);
+
+io.use((socket, next) => {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 
 app.use(express.json());
 
@@ -209,6 +220,42 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
+});
+
+
+io.on("connection", async function (socket) {
+    if (!socket.request.session.userId) {
+        return socket.disconnect(true);
+    }
+
+    const userId = socket.request.session.userId;
+    console.log(
+        `User with id: ${userId} and socket id ${socket.id}, just connected!`
+    );
+    
+    let lastChats = await db.getLastChats();
+    console.log(lastChats);
+
+    socket.emit("last-10-messages", lastChats.rows);
+
+    socket.on("new-message", async ({message}) => {
+
+        let newMessageId = await(db.addNewChatMessage(socket.request.session.userId, message));
+        let userInfo = await (db.getUserInfo(socket.request.session.userId));
+        console.log("message", message);
+        console.log('newMessageId', newMessageId.rows[0].id);
+        console.log('userInfo', userInfo.rows[0]);
+        io.emit("add-new-message", [
+            {
+                id: newMessageId.rows[0].id,
+                firstname: userInfo.rows[0].firstname,
+                lastname: userInfo.rows[0].lastname,
+                text: message,
+                profile_pic_url: userInfo.rows[0].profile_pic_url,
+                sent_at: newMessageId.rows[0].sent_at
+            },
+        ]);
+    });
 });

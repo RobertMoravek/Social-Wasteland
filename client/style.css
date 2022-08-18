@@ -385,3 +385,74 @@ button {
     color: rgb(97, 97, 97);
     border:rgb(97, 97, 97) solid 3px;
 }
+
+.chat-window {
+    position: fixed;
+    bottom: 0;
+    right: 35px;
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border: 1px solid black;
+    z-index: 30;
+}
+
+.chat-board {
+    max-height: 85%;
+    border: 1px solid black;
+    margin: 1rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 0.5rem;
+}
+
+.chat-input {
+    display: flex;
+    margin: 1rem;
+    position: absolute;
+    bottom: 0;
+
+    width: 93.5%;
+}
+
+.chat-input textarea {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    resize: vertical;
+}
+
+#chat-send {
+    margin: 4px 0 4px 1rem;
+    font-size: 1rem;
+    padding: 0.25rem 0.75rem;
+    height: 32px
+}
+
+#chat-closer {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    padding: 0.5rem;
+    cursor: pointer;
+}
+
+.single-message {
+    padding: .3rem 0;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.single-message img {
+    height: 2rem;
+    min-height: 2rem;
+    width: 2rem;
+    min-width: 2rem;
+    object-fit: cover;
+}
+
+.timestamp {
+    font-size: .6rem;
+}

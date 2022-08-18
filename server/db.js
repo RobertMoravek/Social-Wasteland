@@ -235,18 +235,6 @@ module.exports.updateProfile = (id, firstName, lastName, email, age, city, url, 
         });
 };
 
-module.exports.insertProfile = (id, age, city, url) => {
-    // console.log(id, age, city, url);
-    return db.query(
-        `
-            INSERT INTO profile (id, age, city, userurl)
-                VALUES ($1, $2, $3, $4)
-            `,
-        [id, age, city, url]
-    );
-};
-
-
 
 module.exports.loginUser = (email, password) => {
     let temp = null;
@@ -269,39 +257,6 @@ module.exports.loginUser = (email, password) => {
                 return null;
             }
         });
-};
-
-module.exports.addSignature = (id, signature) => {
-    return db.query(
-        `
-                INSERT INTO signatures (id, signature)
-                    VALUES ($1, $2)`,
-        [id, signature]
-    );
-};
-
-module.exports.checkSignature = (id) => {
-    return db.query(
-        `
-            SELECT signature FROM signatures WHERE id = $1 
-            `, [id]
-    ).then((result) => {
-        if (result.rowCount == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    });
-};
-
-module.exports.deleteSignature = (id) => {
-    return db
-        .query(
-            `
-            DELETE FROM signatures WHERE id = $1 
-            `,
-            [id]
-        );
 };
 
 module.exports.deleteAccount = (id) => {
@@ -332,63 +287,6 @@ module.exports.deleteAccount = (id) => {
     });
 };
 
-
-module.exports.showSigner = (id) => {
-    let tempResult;
-    return db.query(
-        `
-        SELECT * FROM users
-            WHERE id = $1`, [id]
-    )
-        .then((result) => {
-            tempResult = result.rows[0];
-            return (db.query(
-                `
-        SELECT * FROM signatures
-            WHERE id = $1`, [id]));
-
-        })
-        .then ((result) => {
-            // console.log("result1, result2", tempResult, result.rows[0]);
-
-            return [tempResult, result.rows[0]];
-        });
-};  
-
-module.exports.showSupporters = function () {
-    return db
-        .query(
-            `SELECT * FROM users
-                    JOIN signatures
-                    ON users.id = signatures.id
-                    LEFT OUTER JOIN profile
-                    ON users.id = profile.id
-                    `
-        )
-        .then((results) => {
-            // console.log('results of showSupporters', results.rows);
-            return results.rows;
-        });
-};
-
-module.exports.showSupportersCity = function (city) {
-    return db
-        .query(
-            `SELECT * FROM users
-                    JOIN signatures
-                    ON users.id = signatures.id
-                    LEFT OUTER JOIN profile
-                    ON users.id = profile.id
-                    WHERE profile.city = $1
-                    `,[city]
-        )
-        .then((results) => {
-            // console.log('results of showSupportersCity db query', results.rows);
-            return results.rows;
-        });
-};
-
-
 function hashPassword(password) {
     return bcrypt
         .genSalt()
@@ -410,3 +308,22 @@ function comparePasswords(password, hash) {
             return result;
         });
 }
+
+module.exports.addNewChatMessage = (myId, message) => {
+    return db.query(
+        `
+       INSERT INTO chatmessages (user_id, text)
+                VALUES ($1, $2) RETURNING id, sent_at
+        `,
+        [myId, message]
+    );
+};
+
+module.exports.getLastChats = () => {
+    return db.query(
+        `
+           SELECT chatmessages.id, text, sent_at, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) ORDER BY chatmessages.id DESC LIMIT 10
+        `,
+        []
+    );
+};

@@ -1,5 +1,12 @@
 import { Component } from "react";
-import { BrowserRouter, Route, Redirect, Switch, Link, useLocation } from "react-router-dom";
+import {
+    BrowserRouter,
+    Route,
+    Redirect,
+    Switch,
+    Link,
+    useLocation,
+} from "react-router-dom";
 import { useParams } from "react-router";
 import ProfilePic from "./profilePic.js";
 import { ProfilePicUploader } from "./profilePicUploader.js";
@@ -7,6 +14,7 @@ import Profile from "./profile.js";
 import FindUsers from "./findUsers.js";
 import ShowOtherUsers from "./otherUserProfile.js";
 import Friends from "./friends.js";
+import Chat from "./chat/chat.js";
 
 // import { Link } from "react-router-dom";
 
@@ -15,6 +23,7 @@ export class App extends Component {
         super();
         this.state = {
             isProfileUploaderVisible: false,
+            isChatVisible: true,
             firstName: "",
             lastName: "",
             email: "",
@@ -24,6 +33,8 @@ export class App extends Component {
         };
 
         this.openProfilePicUploader = this.openProfilePicUploader.bind(this);
+        this.toggleChatWindowVisibility =
+            this.toggleChatWindowVisibility.bind(this);
         this.getUpdatedProfileUrl = this.getUpdatedProfileUrl.bind(this);
         this.giveBackBio = this.giveBackBio.bind(this);
     }
@@ -31,6 +42,12 @@ export class App extends Component {
     openProfilePicUploader(e) {
         this.setState({
             isProfileUploaderVisible: !this.state.isProfileUploaderVisible,
+        });
+    }
+
+    toggleChatWindowVisibility(e) {
+        this.setState({
+            isChatVisible: !this.state.isChatVisible,
         });
     }
 
@@ -81,17 +98,24 @@ export class App extends Component {
                     />
                 )}
 
+                {this.state.isChatVisible && (
+                    <Chat
+                        toggleChatWindowVisibility={
+                            this.toggleChatWindowVisibility
+                        }
+                    />
+                )}
+
                 <section>
                     <BrowserRouter>
-                        <Link to="/">
-                            <ProfilePic
-                                openProfilePicUploader={() => {}}
-                                imgFromApp={this.state.profilePicUrl}
-                                firstNameFromApp={this.state.firstName}
-                                lastNameFromApp={this.state.lastName}
-                                classmenu="menu-profile-image"
-                            />
-                        </Link>
+                        <ProfilePic
+                            openProfilePicUploader={() => {}}
+                            imgFromApp={this.state.profilePicUrl}
+                            firstNameFromApp={this.state.firstName}
+                            lastNameFromApp={this.state.lastName}
+                            classmenu="menu-profile-image"
+                        />
+
                         <Switch>
                             <Route exact path="/">
                                 <Profile

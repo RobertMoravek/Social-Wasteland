@@ -27,12 +27,14 @@ export default function ProfilePic({
     imgFromApp = imgFromApp || "../defaultprofile.jpg";
     return (
         <>
-            <img
-                src={imgFromApp}
-                alt={alt}
-                className={`profile-image ${classmenu}`}
-                onClick={openProfilePicUploader}
-            />
+            <Link to="/">
+                <img
+                    src={imgFromApp}
+                    alt={alt}
+                    className={`profile-image ${classmenu}`}
+                    onClick={openProfilePicUploader}
+                />
+            </Link>
             {numOfRequests > 0 ? <Link to="/friends">
                 <div className="info-num">{numOfRequests}</div>
             </Link> : <Link to="/friends">

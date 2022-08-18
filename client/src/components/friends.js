@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { receiveFriendsSlice} from "./redux/friends/slice.js";
 import FriendshipButton from "./friendshipButton.js";
 
+
 export default function Friends() {
     const dispatch = useDispatch();
 
@@ -30,7 +31,6 @@ export default function Friends() {
     }
     
     
-    console.log("friends before return", friends);
 
     function lowerCaseNames (first, last) {
         first = first.toLowerCase();
