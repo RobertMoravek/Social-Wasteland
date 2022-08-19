@@ -311,6 +311,7 @@ io.on("connection", async function (socket) {
             ]);
             io.to(otherUserId).emit("add-new-message", [
                 {
+                    
                     id: newMessageId.rows[0].id,
                     "otherUserId": userId,
                     firstname: userInfo.rows[0].firstname,
