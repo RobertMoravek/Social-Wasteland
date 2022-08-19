@@ -233,6 +233,8 @@ io.on("connection", async function (socket) {
 
     const userId = socket.request.session.userId;
 
+    socket.join(userId);
+
     onlineUsers[userId] = (function () {
         if (!onlineUsers[userId]) {
             return [socket.id];
@@ -254,28 +256,71 @@ io.on("connection", async function (socket) {
         `User with id: ${userId} and socket id ${socket.id}, just connected!`
     );
     
-    let lastChats = await db.getLastChats();
-    // console.log(lastChats);
+    async function lastChats (myId, otherUserId) {
+        console.log("server side", myId, otherUserId);
+        return (await db.getLastChats(myId, otherUserId));
+        // console.log(lastChats);
+        
+    } 
 
-    socket.emit("last-10-messages", lastChats.rows);
+    socket.on("new-chat", async ( {otherUserId} ) => {
+        console.log("otheruserid", otherUserId);
+        let lastChatsVar = await lastChats(userId, otherUserId);
+        console.log(lastChatsVar);
+        if (lastChatsVar.rows.length > 0) {
+            lastChatsVar.rows[0]["otherUserId"] = otherUserId;
+        } else {
+            lastChatsVar = { rows: [{otherUserId: otherUserId, text: ""}]}; 
+        }
+        console.log('lastChatsVar', await lastChatsVar.rows);
+        socket.emit("last-10-messages", await lastChatsVar.rows);
+    });
 
-    socket.on("new-message", async ({message}) => {
+    socket.on("new-message", async ({message, otherUserId}) => {
 
-        let newMessageId = await(db.addNewChatMessage(socket.request.session.userId, message));
+        let newMessageId = await(db.addNewChatMessage(socket.request.session.userId, otherUserId, message));
         let userInfo = await (db.getUserInfo(socket.request.session.userId));
         // console.log("message", message);
         // console.log('newMessageId', newMessageId.rows[0].id);
         // console.log('userInfo', userInfo.rows[0]);
-        io.emit("add-new-message", [
-            {
-                id: newMessageId.rows[0].id,
-                firstname: userInfo.rows[0].firstname,
-                lastname: userInfo.rows[0].lastname,
-                text: message,
-                profile_pic_url: userInfo.rows[0].profile_pic_url,
-                sent_at: newMessageId.rows[0].sent_at
-            },
-        ]);
+
+        if (otherUserId == null){
+            io.emit("add-new-message", [
+                {
+                    id: newMessageId.rows[0].id,
+                    otherUserId: null,
+                    firstname: userInfo.rows[0].firstname,
+                    lastname: userInfo.rows[0].lastname,
+                    text: message,
+                    profile_pic_url: userInfo.rows[0].profile_pic_url,
+                    sent_at: newMessageId.rows[0].sent_at
+                },
+            ]);
+        } else {
+            console.log("other user id", otherUserId);
+            io.to(userId).emit("add-new-message", [
+                {
+                    id: newMessageId.rows[0].id,
+                    "otherUserId": otherUserId,
+                    firstname: userInfo.rows[0].firstname,
+                    lastname: userInfo.rows[0].lastname,
+                    text: message,
+                    profile_pic_url: userInfo.rows[0].profile_pic_url,
+                    sent_at: newMessageId.rows[0].sent_at,
+                },
+            ]);
+            io.to(otherUserId).emit("add-new-message", [
+                {
+                    id: newMessageId.rows[0].id,
+                    "otherUserId": userId,
+                    firstname: userInfo.rows[0].firstname,
+                    lastname: userInfo.rows[0].lastname,
+                    text: message,
+                    profile_pic_url: userInfo.rows[0].profile_pic_url,
+                    sent_at: newMessageId.rows[0].sent_at,
+                },
+            ]);
+        }
     });
 
     socket.on("disconnect", () => {

@@ -1,8 +1,13 @@
-export default function friendsReducer(chats = [], action) {
-    if (action.type == "chats/InitialMessagesReceived") {
-        return action.payload;
+export default function chatReducer(chats = {}, action) {
+    console.log("action payload", action.payload);
+    if (action.type == "chats/InitialMessagesReceived" && action.payload.length > 0) {
+        console.log('first if');
+        return {...chats, [action.payload[0].otherUserId]: action.payload};
+        
+    } else if (action.type == "chats/InitialMessagesReceived" && action.payload.length == 0) {
+        return {...chats};
     } else if (action.type == "chats/NewMessageReceived") {
-        return [action.payload, ...chats ];
+        return { ...chats, [action.payload.otherUserId]: [action.payload, ...chats[action.payload.otherUserId]] };
     } else {
         return chats;
     }
@@ -20,7 +25,7 @@ export function receiveInitialChatMessages(messages) {
 }
 
 export function receiveNewChatMessage(message) {
-    // console.log("friends in Slice", friends);
+    // console.log("eieieiei", message);
     return {
         type: "chats/NewMessageReceived",
         payload: message,

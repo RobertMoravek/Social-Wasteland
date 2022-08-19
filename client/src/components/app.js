@@ -37,6 +37,7 @@ export class App extends Component {
             profilePicUrl: "",
             bio: "",
             id: "",
+            currentChatPartner: null
         };
 
         this.openProfilePicUploader = this.openProfilePicUploader.bind(this);
@@ -49,6 +50,7 @@ export class App extends Component {
         this.giveBackBio = this.giveBackBio.bind(this);
         this.closeChat = this.closeChat.bind(this);
         this.closeOnlineUsers = this.closeOnlineUsers.bind(this);
+        this.changeChatPartner = this.changeChatPartner.bind(this);
     }
 
     openProfilePicUploader(e) {
@@ -123,6 +125,12 @@ export class App extends Component {
         this.setState({ bio: newBio });
     }
 
+    changeChatPartner(id){
+        this.setState({
+            currentChatPartner: id
+        });
+    }
+
     render() {
         return (
             <>
@@ -137,18 +145,15 @@ export class App extends Component {
                     />
                 )}
 
-                {this.state.isChatVisible && (
-                    <Chat
-                        toggleChatWindowVisibility={
-                            this.toggleChatWindowVisibility
-                        }
-                    />
-                )}
                 <ChatOpener
-                    toggleChatWindowVisibility={this.toggleChatWindowVisibility} closeOnlineUsers={this.closeOnlineUsers}
+                    toggleChatWindowVisibility={this.toggleChatWindowVisibility}
+                    closeOnlineUsers={this.closeOnlineUsers}
                 />
                 <OnlineUsersOpener
-                    toggleOnlineUsersVisibility={this.toggleOnlineUsersVisibility} closeChat={this.closeChat}
+                    toggleOnlineUsersVisibility={
+                        this.toggleOnlineUsersVisibility
+                    }
+                    closeChat={this.closeChat}
                 />
                 <section>
                     <BrowserRouter>
@@ -162,6 +167,14 @@ export class App extends Component {
 
                         {this.state.isMenuVisible && <Menu />}
                         {this.state.isOnlineUsersVisible && <OnlineUsers />}
+
+                        {this.state.isChatVisible && (
+                            <Chat
+                                toggleChatWindowVisibility={this.toggleChatWindowVisibility}
+                                changeChatPartner={this.changeChatPartner}
+                                currentChatPartner={this.state.currentChatPartner}
+                            />
+                        )}
 
                         <Switch>
                             <Route exact path="/">
@@ -194,8 +207,7 @@ export class App extends Component {
                                     //This array includes pages on which user will
                                     // not be redirected
                                     ["/logout"].includes(location.pathname) ? (
-                                        (window.location.href =
-                                            "http://localhost:3000/logout")
+                                        (window.location.href = "/logout")
                                     ) : (
                                         <Redirect to="/" />
                                     )

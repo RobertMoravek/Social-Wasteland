@@ -9,8 +9,8 @@ export const init = (store) => {
     if (!socket) {
         socket = io.connect();
 
-        socket.on("last-10-messages", async (messages) => {
-            
+        socket.on("last-10-messages", (messages) => {
+            console.log('messages', messages);
             store.dispatch(receiveInitialChatMessages(messages));
         });
 

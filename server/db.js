@@ -309,23 +309,36 @@ function comparePasswords(password, hash) {
         });
 }
 
-module.exports.addNewChatMessage = (myId, message) => {
+module.exports.addNewChatMessage = (myId, otherUserId, message) => {
     return db.query(
         `
-       INSERT INTO chatmessages (user_id, text)
-                VALUES ($1, $2) RETURNING id, sent_at
+        INSERT INTO chatmessages (user_id, recipient_id, text)
+                VALUES ($1, $2, $3) RETURNING id, sent_at
         `,
-        [myId, message]
+        [myId, otherUserId, message]
     );
 };
 
-module.exports.getLastChats = () => {
-    return db.query(
-        `
-           SELECT chatmessages.id, text, sent_at, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) ORDER BY chatmessages.id DESC LIMIT 10
-        `,
-        []
-    );
+module.exports.getLastChats = (myId, otherUserId) => {
+    console.log(myId, otherUserId);
+    if (otherUserId == null) {
+        console.log('running if');
+        return db.query(
+            `
+        SELECT chatmessages.id, text, sent_at, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE recipient_id IS NULL ORDER BY chatmessages.id DESC LIMIT 10
+    `,
+            []
+        );
+        
+    } else {
+        return db.query(
+            `
+       SELECT chatmessages.id, text, sent_at, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE (recipient_id=$1 AND user_id=$2) OR (recipient_id=$2 AND user_id=$1) ORDER BY chatmessages.id DESC LIMIT 10
+    `,
+            [myId, otherUserId]
+        );
+        
+    }
 };
 
 module.exports.getListOfUsers = (inputArray) => {

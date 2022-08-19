@@ -1,5 +1,5 @@
-export default function ChatMessages({message}) {
-    // console.log("message in board", message);
+export default function ChatMessage({message}) {
+    console.log("message in chatmessages", message);
     return (<>
         <div className="single-message">
             <img src={message.profile_pic_url || "./defaultprofile.jpg"} alt="" className="tiny-profile-image" />

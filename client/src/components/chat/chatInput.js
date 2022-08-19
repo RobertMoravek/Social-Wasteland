@@ -3,7 +3,7 @@ import { socket } from '../../socket';
 
 import { useState } from 'react';
 
-export default function ChatInput () {
+export default function ChatInput ({currentChatPartner}) {
 
     
 
@@ -22,7 +22,8 @@ export default function ChatInput () {
     function sendChatMessage(e) {
         
         socket.emit('new-message', {
-            message: inputField
+            message: inputField,
+            otherUserId: currentChatPartner
         });
         deleteInput();
     }
