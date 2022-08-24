@@ -161,6 +161,8 @@ p, span, li, form, label, input, textarea, button, div {
     user-select: none;
     cursor: pointer;
     object-fit: cover;
+    width: 300px;
+    height: 400px;
 }
 
 .menu-profile-image {
