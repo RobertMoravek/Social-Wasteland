@@ -2,6 +2,7 @@ import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { receiveInitialChatMessages, receiveNewChatMessage } from "./components/redux/chat/slice.js";
 import { receiveOnlineUsersSlice } from "./components/redux/onlineusers/slice.js";
+import { receiveInitialUnreadChatsInfo } from "./components/redux/unreadChatsInfo/slice.js";
 
 export let socket;
 
@@ -12,6 +13,11 @@ export const init = (store) => {
         socket.on("last-10-messages", (messages) => {
             console.log('messages', messages);
             store.dispatch(receiveInitialChatMessages(messages));
+        });
+
+        socket.on("unreadChatsInfo", (unreadChatsInfo) => {
+            console.log("unreadChatsInfo in socket", unreadChatsInfo);
+            store.dispatch(receiveInitialUnreadChatsInfo(unreadChatsInfo));
         });
 
         socket.on("add-new-message", (message) => {

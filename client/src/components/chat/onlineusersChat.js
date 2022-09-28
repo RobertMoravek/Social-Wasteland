@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import SingleUser from "./singleUser.js";
+import SingleUserChat from "./singleUserChat.js";
 
-export default function OnlineUsers ({changeChatPartner}) {
+export default function OnlineUsersChat ({changeChatPartner}) {
     let onlineUsers = useSelector((state) => state.onlineUsers);
     console.log(onlineUsers);
     return (
         <>
             <div className="online-users-list">
-                {/* <div className="single-online-user">
+                <div className="single-online-user">
                     <img
                         src="./defaultprofile.jpg"
                         alt=""
@@ -18,7 +18,7 @@ export default function OnlineUsers ({changeChatPartner}) {
                         <p id="username-online-list">
                             MAIN CHAT ROOM
                         </p>
-                        <p className="timestamp">{user.sent_at.slice(11, 16)}</p>
+                        {/* <p className="timestamp">{user.sent_at.slice(11, 16)}</p> */}
                     </div>
                     <div
                         className="chat-bubble-icon"
@@ -26,10 +26,10 @@ export default function OnlineUsers ({changeChatPartner}) {
                     >
                         💬
                     </div>
-                </div> */}
+                </div>
 
                 {onlineUsers.map((user) => (
-                    <SingleUser
+                    <SingleUserChat
                         key={user.id}
                         user={user}
                         changeChatPartner={changeChatPartner}

@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export default function SingleUser({ user, changeChatPartner }) {
+export default function SingleUserChat({ user, changeChatPartner }) {
+    let unreadChatsInfo = useSelector(state => state.unreadChatsInfo);
+    console.log("pikachu", unreadChatsInfo);
     return (
         <>
             <div className="single-online-user">
@@ -17,7 +20,7 @@ export default function SingleUser({ user, changeChatPartner }) {
                         {/* <p className="timestamp">{user.sent_at.slice(11, 16)}</p> */}
                     </div>
                 </Link>
-                {/* <div className="chat-bubble-icon" onClick={()=> changeChatPartner(user.id)}>💬<span></span></div> */}
+                <div className="chat-bubble-icon" onClick={()=> changeChatPartner(user.id)}>💬<span>{unreadChatsInfo.map((item) => {if(item == user.id) {return "X";}})}</span></div>
             </div>
         </>
     );

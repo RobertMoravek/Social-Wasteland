@@ -7,7 +7,7 @@ export default function ChatOpener ({toggleChatWindowVisibility, closeOnlineUser
 
     return (
         <>
-            <button className="chat-opener" onClick={openAndClose}>Sitewide Chat</button>
+            <button className="chat-opener" onClick={openAndClose}>Chat</button>
         </>
     );
 }

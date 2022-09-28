@@ -260,8 +260,12 @@ io.on("connection", async function (socket) {
         console.log("server side", myId, otherUserId);
         return (await db.getLastChats(myId, otherUserId));
         // console.log(lastChats);
-        
     } 
+
+    async function unreadChatsInfo (myId) {
+        console.log('myId vor query', myId);
+        return (db.unreadChatsInfo(myId));
+    }
 
     socket.on("new-chat", async ( {otherUserId} ) => {
         console.log("otheruserid", otherUserId);
@@ -270,10 +274,20 @@ io.on("connection", async function (socket) {
         if (lastChatsVar.rows.length > 0) {
             lastChatsVar.rows[0]["otherUserId"] = otherUserId;
         } else {
-            lastChatsVar = { rows: [{otherUserId: otherUserId, text: ""}]}; 
+            lastChatsVar = { rows: [{otherUserId: otherUserId, text: "<No messages found>", seen: true}]}; 
         }
         console.log('lastChatsVar', await lastChatsVar.rows);
         socket.emit("last-10-messages", await lastChatsVar.rows);
+        let unreadChatsInfoVar = await unreadChatsInfo(userId);
+        let unreadChatsInfoArray = [];
+        unreadChatsInfoVar.rows.map((item, index) => {
+            unreadChatsInfoArray.push(unreadChatsInfoVar.rows[index].user_id);
+            // console.log(item);
+            // console.log("come on", unreadChatsInfoVar.rows[index].user_id);
+        });
+        console.log("ids with unread messages", unreadChatsInfoArray);
+        socket.emit("unreadChatsInfo", unreadChatsInfoArray);
+
     });
 
     socket.on("new-message", async ({message, otherUserId}) => {

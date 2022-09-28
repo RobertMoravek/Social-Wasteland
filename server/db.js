@@ -325,7 +325,7 @@ module.exports.getLastChats = (myId, otherUserId) => {
         console.log('running if');
         return db.query(
             `
-        SELECT chatmessages.id, text, sent_at, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE recipient_id IS NULL ORDER BY chatmessages.id DESC LIMIT 10
+        SELECT chatmessages.id, text, sent_at, seen, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE recipient_id IS NULL ORDER BY chatmessages.id DESC
     `,
             []
         );
@@ -333,12 +333,21 @@ module.exports.getLastChats = (myId, otherUserId) => {
     } else {
         return db.query(
             `
-       SELECT chatmessages.id, text, sent_at, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE (recipient_id=$1 AND user_id=$2) OR (recipient_id=$2 AND user_id=$1) ORDER BY chatmessages.id DESC LIMIT 10
+       SELECT chatmessages.id, text, sent_at, seen, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE (recipient_id=$1 AND user_id=$2) OR (recipient_id=$2 AND user_id=$1) ORDER BY chatmessages.id DESC
     `,
             [myId, otherUserId]
         );
         
     }
+};
+
+module.exports.unreadChatsInfo = (myId) => {
+    console.log('myId', myId);
+    return db.query(
+        `
+        SELECT DISTINCT user_id from chatmessages where seen=false AND recipient_id=$1
+        `, [myId]
+    );
 };
 
 module.exports.getListOfUsers = (inputArray) => {

@@ -14,8 +14,8 @@ export default function ChatBoard({currentChatPartner}) {
         <>
             
 
-            {currentChatPartner == null && <h3 className="chat-headline">chat with everyone!</h3> }
-            {currentChatPartner != null && <h3 className="chat-headline">private chat with {currentChatPartner}</h3> }
+            {currentChatPartner == null && <h3 className="chat-headline">Chat with everyone!</h3> }
+            {currentChatPartner != null && <h3 className="chat-headline">Private chat with {currentChatPartner}</h3> }
             <div className="chat-text-window">
                 {messages && messages.map(message => <ChatMessage key={message.id} message={message}/>)}
 

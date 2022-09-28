@@ -1,6 +1,6 @@
 import ChatBoard from "./chatBoard.js";
 import ChatInput from "./chatInput.js";
-import OnlineUsers from "../onlineusers/onlineusers";
+import OnlineUsersChat from "../chat/onlineusersChat";
 import { socket } from "../../socket";
 
 export default function Chat ({toggleChatWindowVisibility, changeChatPartner, currentChatPartner}) {
@@ -17,7 +17,7 @@ export default function Chat ({toggleChatWindowVisibility, changeChatPartner, cu
             </div>
             <div className="chat-board">
                 <ChatBoard currentChatPartner={currentChatPartner} />
-                <OnlineUsers changeChatPartner={changeChatPartner}/>
+                <OnlineUsersChat changeChatPartner={changeChatPartner}/>
             </div>
 
             <ChatInput currentChatPartner={currentChatPartner}/>
