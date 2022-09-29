@@ -513,7 +513,28 @@ button {
 .chat-bubble-icon {
     cursor: pointer;
     font-size: 1.5rem;
-    transform: translateY(-0.5rem);
+    transform: translateY(-0.25rem);
+    position: relative;
+}
+
+.chat-bubble-icon div {
+    position: absolute;
+    top: 5px;
+    left: 1.5rem;
+    height: 10px;
+    width: 10px;
+    border: 5px solid red;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.chatTextSection p {
+    width: 95%;
+    overflow-wrap: break-word;
+}
+
+.highlighted-chat {
+    background-color: rgb(0, 100, 158);
 }
 
 .single-message {
@@ -620,6 +641,3 @@ button {
     border-bottom: 1px solid black;
 }
 
-.unseen {
-    color: darkred;
-}

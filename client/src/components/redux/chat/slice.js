@@ -1,5 +1,4 @@
 export default function chatReducer(chats = {}, action) {
-    console.log("action payload", action.payload);
     if (action.type == "chats/InitialMessagesReceived" && action.payload.length > 0) {
         console.log('first if');
         return {...chats, [action.payload[0].otherUserId]: action.payload};

@@ -357,3 +357,12 @@ module.exports.getListOfUsers = (inputArray) => {
         [inputArray]
     );
 };
+
+module.exports.markAsSeen = (userId, otherUserId) => {
+    console.log('trying to mark as seen', userId, otherUserId);
+    return db.query(
+        `
+            UPDATE chatmessages SET seen=true WHERE user_id=$2 AND recipient_id=$1
+        `, [userId, otherUserId]
+    );
+};

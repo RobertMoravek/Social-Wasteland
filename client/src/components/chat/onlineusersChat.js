@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SingleUserChat from "./singleUserChat.js";
 
-export default function OnlineUsersChat ({changeChatPartner}) {
+export default function OnlineUsersChat ({changeChatPartner, currentChatPartner, id}) {
     let onlineUsers = useSelector((state) => state.onlineUsers);
-    console.log(onlineUsers);
+    console.log("onlineusers", onlineUsers);
     return (
         <>
             <div className="online-users-list">
-                <div className="single-online-user">
+                <div className={!currentChatPartner ? "single-online-user highlighted-chat" : "single-online-user"}>
                     <img
                         src="./defaultprofile.jpg"
                         alt=""
@@ -29,10 +29,12 @@ export default function OnlineUsersChat ({changeChatPartner}) {
                 </div>
 
                 {onlineUsers.map((user) => (
+                    id != user.id &&
                     <SingleUserChat
                         key={user.id}
                         user={user}
                         changeChatPartner={changeChatPartner}
+                        currentChatPartner={currentChatPartner}
                     />
                 ))}
             </div>

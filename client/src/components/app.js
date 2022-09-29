@@ -37,7 +37,8 @@ export class App extends Component {
             profilePicUrl: "",
             bio: "",
             id: "",
-            currentChatPartner: null
+            currentChatPartner: null,
+            firstChat: true,
         };
 
         this.openProfilePicUploader = this.openProfilePicUploader.bind(this);
@@ -51,6 +52,7 @@ export class App extends Component {
         this.closeChat = this.closeChat.bind(this);
         this.closeOnlineUsers = this.closeOnlineUsers.bind(this);
         this.changeChatPartner = this.changeChatPartner.bind(this);
+        this.firstChatToggler = this.firstChatToggler.bind(this);
     }
 
     openProfilePicUploader(e) {
@@ -131,6 +133,10 @@ export class App extends Component {
         });
     }
 
+    firstChatToggler() {
+        this.setState({firstChat: false});
+    }
+
     render() {
         return (
             <>
@@ -148,6 +154,8 @@ export class App extends Component {
                 <ChatOpener
                     toggleChatWindowVisibility={this.toggleChatWindowVisibility}
                     closeOnlineUsers={this.closeOnlineUsers}
+                    firstChat={this.state.firstChat}
+                    firstChatToggler={this.firstChatToggler}
                 />
                 <OnlineUsersOpener
                     toggleOnlineUsersVisibility={
@@ -173,6 +181,8 @@ export class App extends Component {
                                 toggleChatWindowVisibility={this.toggleChatWindowVisibility}
                                 changeChatPartner={this.changeChatPartner}
                                 currentChatPartner={this.state.currentChatPartner}
+                                firstChat={this.state.firstChat}
+                                id={this.state.id}
                             />
                         )}
 

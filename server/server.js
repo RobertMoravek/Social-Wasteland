@@ -267,7 +267,7 @@ io.on("connection", async function (socket) {
         return (db.unreadChatsInfo(myId));
     }
 
-    socket.on("new-chat", async ( {otherUserId} ) => {
+    socket.on("new-chat", async ( {otherUserId, firstChat} ) => {
         console.log("otheruserid", otherUserId);
         let lastChatsVar = await lastChats(userId, otherUserId);
         console.log(lastChatsVar);
@@ -278,16 +278,23 @@ io.on("connection", async function (socket) {
         }
         console.log('lastChatsVar', await lastChatsVar.rows);
         socket.emit("last-10-messages", await lastChatsVar.rows);
-        let unreadChatsInfoVar = await unreadChatsInfo(userId);
-        let unreadChatsInfoArray = [];
-        unreadChatsInfoVar.rows.map((item, index) => {
-            unreadChatsInfoArray.push(unreadChatsInfoVar.rows[index].user_id);
-            // console.log(item);
-            // console.log("come on", unreadChatsInfoVar.rows[index].user_id);
-        });
-        console.log("ids with unread messages", unreadChatsInfoArray);
-        socket.emit("unreadChatsInfo", unreadChatsInfoArray);
+        
+        if (firstChat) {
+            let unreadChatsInfoVar = await unreadChatsInfo(userId);
+            let unreadChatsInfoArray = [];
+            unreadChatsInfoVar.rows.map((item, index) => {
+                unreadChatsInfoArray.push(unreadChatsInfoVar.rows[index].user_id);
+                // console.log(item);
+                // console.log("come on", unreadChatsInfoVar.rows[index].user_id);
+            });
+            console.log("ids with unread messages", unreadChatsInfoArray);
+            socket.emit("unreadChatsInfo", unreadChatsInfoArray);
+        }
 
+    });
+
+    socket.on("markAsSeen", async ({currentChatPartner}) => {
+        db.markAsSeen(userId, currentChatPartner);
     });
 
     socket.on("new-message", async ({message, otherUserId}) => {
@@ -335,6 +342,7 @@ io.on("connection", async function (socket) {
                     sent_at: newMessageId.rows[0].sent_at,
                 },
             ]);
+            io.to(otherUserId).emit("newUnreadChat", userId);
         }
     });
 
