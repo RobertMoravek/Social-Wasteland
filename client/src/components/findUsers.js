@@ -7,21 +7,23 @@ export default function FindUsers() {
     let [isNewestUsersVisible, setIsNewestUsersVisible] = useState(true);
     let [userSearchField, setUserSearchField] = useState("");
 
+    // When searchfield is empty, try get users without param (latest users)
     useEffect(() => {
         getUsers();
     }, [userSearchField == ""]);
 
+    // If user types something in searchfield, try to get users with params 
     useEffect(() => {
         getUsers(userSearchField);
     }, [userSearchField]);
 
+    // See above
     function getUsers(searchInput) {
         if (searchInput) {
             fetch(`/searchusers/${searchInput}`)
                 .then((response) => response.json())
                 .then((result) => {
                     if (!result.error) {
-                        console.log(result);
                         setUserSearchResults(result.rows);
                     } else {
                         console.log("loading newest users failed", result);
@@ -32,7 +34,6 @@ export default function FindUsers() {
                 .then((response) => response.json())
                 .then((result) => {
                     if (!result.error) {
-                        console.log(result);
                         setNewestUsers(result.rows);
                     } else {
                         console.log("loading newest users failed", result);
@@ -41,6 +42,7 @@ export default function FindUsers() {
         }
     }
 
+    // When user types, either show or don't show newest users "component", then set searchfield variable
     function searchFieldInput(e) {
         if (e.currentTarget.value.length > 0) {
             setIsNewestUsersVisible(false);
@@ -50,6 +52,7 @@ export default function FindUsers() {
         setUserSearchField(e.currentTarget.value);
     }
 
+    // Change the names to lowercase because of stupid font
     function lowerCaseNames(first, last) {
         first = first.toLowerCase();
         last = last.toLowerCase();

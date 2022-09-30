@@ -4,7 +4,6 @@ export default function unreadChatsInfoReducer(unreadChatsInfo = [], action) {
     } else if (action.type == "chats/NewUnreadChatReceived") {
         return ([...unreadChatsInfo, action.payload]);
     } else if (action.type == "chats/DeleteUnreadChat") {
-        console.log('trying to dleete unread chat');
         return (unreadChatsInfo.filter(id => {return id!=action.payload;}));
     }
     return unreadChatsInfo;

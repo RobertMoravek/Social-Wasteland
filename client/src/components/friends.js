@@ -15,23 +15,22 @@ export default function Friends() {
         (state) => state.friends.filter(friend => !friend.accepted)
     );
     
+    // Very minimalistic way of fetching all friends of the user and putting in the store. BEtter hope, there are no errors ^^'
     useEffect(() => {    
         (async () => {
             const res = await fetch("/getallfriends");
             const data = await res.json();
-            // this line right here starts the process of adding info to Redux!!
-            // receiveCharacters is an action creator - function that returns an action
             dispatch(receiveFriendsSlice(data.rows));
         })();
-        
     }, []);
 
+    // If no friends could be found, return none
     if (!friends) {
         return null;
     }
     
     
-
+    // Lower Case because of stupid font
     function lowerCaseNames (first, last) {
         first = first.toLowerCase();
         last = last.toLowerCase();
@@ -46,6 +45,7 @@ export default function Friends() {
                 <div className="component-content friends" id="requests">
                     <h3 className="subhl">friend requests</h3>
                     {friendRequests.length > 0 ? <></> : <><p>You have no friend requests at the moment.</p><Link to="/users"><button>Find friends!</button></Link></> }
+                    {/* If you have friendship requests, show them */}
                     {friendRequests.map((friend) => (
                         <div key={friend.id}>
                             <div>
@@ -71,11 +71,13 @@ export default function Friends() {
                                     </div>
                                 </Link>
                             </div>
+                            {/* Component showing the friendship status */}
                             <FriendshipButton id={friend.id} />
                         </div>
                     ))}
 
                     <h3 className="subhl extra-top-margin">your friends</h3>
+                    {/* Show already confirmed friends */}
                     {friends.map((friend) => (
                         <div key={friend.id}>
                             <div >
@@ -101,6 +103,7 @@ export default function Friends() {
                                     </div>
                                 </Link>
                             </div>
+                            {/* Component showing the current friendship status */}
                             <FriendshipButton id={friend.id} />
                         </div>
                     ))}

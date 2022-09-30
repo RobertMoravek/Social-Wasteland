@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { receiveFriendsSlice } from "./redux/friends/slice.js";
 
 export default function ProfilePic({
-    openProfilePicUploader,
+    toggleProfilePicUploader,
     imgFromApp,
     firstNameFromApp,
     lastNameFromApp,
@@ -12,17 +10,15 @@ export default function ProfilePic({
 }) {
     let [numOfRequests, setNumOfRequests] = useState(0);
 
+    // On mount get the number of unanswered friendship requests
     useEffect(() => {
         (async () => {
             const res = await fetch("/getnumofrequests");
             const data = await res.json();
-            // this line right here starts the process of adding info to Redux!!
-            // receiveCharacters is an action creator - function that returns an action
             setNumOfRequests(data.rows[0].count);
-            console.log(numOfRequests);
         })();
     }, []);
-    // console.log("PROPS in profilePic: ", props);
+
     let alt = `${firstNameFromApp} ${lastNameFromApp}`;
     imgFromApp = imgFromApp || "../defaultprofile.jpg";
     return (
@@ -32,7 +28,7 @@ export default function ProfilePic({
                     src={imgFromApp}
                     alt={alt}
                     className={`profile-image ${classmenu}`}
-                    onClick={openProfilePicUploader}
+                    onClick={toggleProfilePicUploader}
                 />
             </Link>
             {numOfRequests > 0 ? <Link to="/friends">

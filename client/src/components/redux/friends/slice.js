@@ -14,15 +14,10 @@ export default function friendsReducer(friends = [], action) {
             friend.id != action.payload.id;
         });
     }
-    
-    // console.log("friends in if in reducer", friends);
-
-
     return friends;
 }
 
 export function receiveFriendsSlice(friends) {
-    // console.log("friends in Slice", friends);
     return {
         type: "friends/received",
         payload: { friends },

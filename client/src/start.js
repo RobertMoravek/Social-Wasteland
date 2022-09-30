@@ -14,16 +14,20 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(immutableState.default()))
 );
 
+// Try to fetch the userId (only exists if user is logged in)
 fetch("/user/id.json")
     .then((response) => response.json())
     .then((data) => {
+        // If it doesn't exist show the Welcome component
         if (!data.userId) {
             ReactDOM.render(<Welcome />, document.querySelector("main"));
+        // Otherwise show the app
         } else {
             init(store);
             ReactDOM.render(<Provider store={store}><App /></Provider>, document.querySelector("main"));
         }
     })
+    // If something went wrong, be safe and show the Welcome component
     .catch(() => {
         ReactDOM.render(<Welcome />, document.querySelector("main"));
     });

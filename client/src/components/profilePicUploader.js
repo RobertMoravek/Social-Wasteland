@@ -12,17 +12,17 @@ export class ProfilePicUploader extends Component {
         this.submitForm = this.submitForm.bind(this);
     }
 
+    // Post the pic to the server
     submitForm(e) {
         e.preventDefault();
-        // console.log(e.currentTarget);
         const form = e.currentTarget;
         const fileInput = form.querySelector("input[type=file]");
+        // Alert and abort, if no file
         if (fileInput.files.length < 1) {
             alert("Add a file, dummy!");
             return;
         }
         const formData = new FormData(form);
-        console.log(formData);
 
         fetch("/uploadprofilepic", {
             method: "post",
@@ -34,7 +34,7 @@ export class ProfilePicUploader extends Component {
             })
             .then((result) => {
                 if (!result.error) {
-                    console.log(result);
+                    // Update the url of the shown profile pic
                     this.props.getUpdatedProfileUrl(result);
                 } else {
                     console.log('upload failed');
@@ -47,7 +47,7 @@ export class ProfilePicUploader extends Component {
 
     render() {
         return (
-            <div className="uploader-background" onClick={this.props.openProfilePicUploader} >
+            <div className="uploader-background" onClick={this.props.toggleProfilePicUploader} >
                 <form encType="multipart/form-data" className="uploadForm" onClick={(e) => {e.stopPropagation(); e.nativeEvent.stopImmediatePropagation();}} onSubmit={this.submitForm}>
                     <h3 className="uploadHeadline" id="uploadExpander">
                         upload an image<span className="arrowDown"></span>

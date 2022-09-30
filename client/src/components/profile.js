@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import ProfilePic from "./profilePic.js";
 import BioEditor from "./bioEditor";
 import Friends from "./friends.js";
@@ -21,15 +21,14 @@ export default class Profile extends Component {
     }
 
     render() {
-        // console.log("Props in Profile:", this.props);
         return (
             <>
                 <div className="component profile ">
                     <h2 className="component-headline">profile</h2>
                     <div className="component-content profile">
                         <ProfilePic
-                            openProfilePicUploader={
-                                this.props.openProfilePicUploader
+                            toggleProfilePicUploader={
+                                this.props.toggleProfilePicUploader
                             }
                             imgFromApp={this.props.imgFromApp}
                             firstNameFromApp={this.props.firstNameFromApp}

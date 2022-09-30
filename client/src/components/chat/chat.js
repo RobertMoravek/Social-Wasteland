@@ -5,25 +5,21 @@ import { socket } from "../../socket";
 import { useEffect } from "react";
 import { deleteUnreadChat } from "../redux/unreadChatsInfo/slice.js";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+
 
 
 export default function Chat ({toggleChatWindowVisibility, changeChatPartner, currentChatPartner, firstChat, id}) {
     const dispatch = useDispatch();
-    let chats = useSelector(state => state.chats);
     
+    // Emit new chat to server, so it can fetch the messages
     socket.emit("new-chat", {
         otherUserId: currentChatPartner,
         firstChat: firstChat,
     });
 
-    // useEffect(() => {
-
-    // }, [chats]);
-
+    // When the chat partner changes and it's not the first chat, mark the messages of that chat as read in the store and on the server
     useEffect(() => {
         if (!firstChat) {
-            console.log('current chat partner just changed');
             dispatch(deleteUnreadChat(currentChatPartner));
             socket.emit("markAsSeen", {currentChatPartner: currentChatPartner});
         }
@@ -35,10 +31,12 @@ export default function Chat ({toggleChatWindowVisibility, changeChatPartner, cu
                 X
             </div>
             <div className="chat-board">
-                <ChatBoard currentChatPartner={currentChatPartner} />
+                {/* Show messages */}
+                <ChatBoard currentChatPartner={currentChatPartner} /> 
+                {/* Show online users */}
                 <OnlineUsersChat changeChatPartner={changeChatPartner} currentChatPartner={currentChatPartner} id={id}/>
             </div>
-
+            {/* Show input field */}
             <ChatInput currentChatPartner={currentChatPartner}/>
         </div>
     );

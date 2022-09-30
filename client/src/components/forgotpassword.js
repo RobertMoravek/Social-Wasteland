@@ -15,6 +15,10 @@ export class ForgotPassword extends Component {
         this.submitForm = this.submitForm.bind(this);
     }
 
+    ////////////////
+    // Each view-number shows a different view of the process.
+    /////////////////
+
     currentView() {
         if (this.state.view === 1) {
             return (
@@ -88,10 +92,12 @@ export class ForgotPassword extends Component {
         }
     }
 
+    ////////////////
+    // Depending on the form you are in, check/send/request the according information
+    ////////////////
     submitForm(e) {
         e.preventDefault();
         let body = null;
-        console.log(this);
         switch (e.currentTarget.name) {
                         case "resetPasswordEmail":
                             this.setState({ error: false });

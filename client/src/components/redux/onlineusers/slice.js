@@ -7,7 +7,6 @@ export default function onlineUsersReducer(onlineUsers = [], action) {
 }
 
 export function receiveOnlineUsersSlice(users) {
-    // console.log("friends in Slice", friends);
     return {
         type: "onlineusers/received",
         payload: users,

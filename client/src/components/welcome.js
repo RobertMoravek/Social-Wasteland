@@ -7,6 +7,7 @@ import {BrowserRouter, Route} from "react-router-dom";
 
 class Welcome extends Component {
 
+    // Route for all logged out pages
 
     render () {
         return (

@@ -3,6 +3,7 @@ const uidSafe = require("uid-safe");
 const path = require("path");
 
 
+// Create a storage method
 const storage = multer.diskStorage({
     destination: path.join(__dirname, "uploads"),
     filename: (req, file, callback) => {
@@ -14,10 +15,19 @@ const storage = multer.diskStorage({
     }
 });
 
+// Use the storage to store files locally and return the filename
 module.exports.uploader = multer({
     storage: storage,
     limits: {
         fileSize: 2097152,
-
+    },
+    // Filter files with the wrong mime-type
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg" ) {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error("Wrong filetype"));
+        }
     }
 });

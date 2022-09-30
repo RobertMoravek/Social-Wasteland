@@ -9,8 +9,8 @@ if (process.env.NODE_ENV == 'production') {
     dbUrl = `postgres:${user}:${password}@localhost:5432/${database}`;
 
 }
-
 const db = spicedPg(dbUrl);
+
 
 module.exports.doesEmailExist = (email) => {
     return db.query(`SELECT * FROM users WHERE email=$1`, [email]);
@@ -25,9 +25,9 @@ module.exports.insertUser = (firstName, lastName, email, password) => {
                     VALUES ($1, $2, $3, $4) RETURNING id`,
                 [firstName, lastName, email, result]
             );
-
         });
 };
+
 
 module.exports.insertResetCode = (email, resetCode) => {
     return db.query(
@@ -36,7 +36,6 @@ module.exports.insertResetCode = (email, resetCode) => {
             VALUES ($1, $2) RETURNING code`,
         [email, resetCode]
     );
-
 };
 
 
@@ -65,7 +64,7 @@ module.exports.updatePassword = (email, password) => {
 module.exports.updateProfilePic = (id, url) => {
     return db.query(
         `
-       UPDATE users SET profile_pic_url=$2 WHERE id=$1 RETURNING profile_pic_url
+        UPDATE users SET profile_pic_url=$2 WHERE id=$1 RETURNING profile_pic_url
         `,
         [id, url]
     );
@@ -74,7 +73,7 @@ module.exports.updateProfilePic = (id, url) => {
 module.exports.updateBio = (id, bio) => {
     return db.query(
         `
-       UPDATE users SET bio=$2 WHERE id=$1 RETURNING bio
+        UPDATE users SET bio=$2 WHERE id=$1 RETURNING bio
         `,
         [id, bio]
     );
@@ -138,7 +137,7 @@ module.exports.makeFriendshipRequest = (myId, otherId) => {
     console.log(myId, otherId);
     return db.query(
         `
-       INSERT INTO friendships (sender_id, recipient_id)
+        INSERT INTO friendships (sender_id, recipient_id)
                 VALUES ($1, $2) RETURNING id
         `,
         [myId, otherId]
@@ -149,7 +148,7 @@ module.exports.makeFriendshipRequest = (myId, otherId) => {
 module.exports.cancelFriendship = (myId, otherId) => {
     return db.query(
         `
-       DELETE FROM friendships WHERE (sender_id=$1 AND recipient_id=$2) OR (sender_id=$2 AND recipient_id=$1)
+        DELETE FROM friendships WHERE (sender_id=$1 AND recipient_id=$2) OR (sender_id=$2 AND recipient_id=$1)
         `,
         [myId, otherId]
     );
@@ -158,7 +157,7 @@ module.exports.cancelFriendship = (myId, otherId) => {
 module.exports.acceptFriendship = (myId, otherId) => {
     return db.query(
         `
-       UPDATE friendships SET accepted=true WHERE sender_id=$2 AND recipient_id=$1 RETURNING accepted
+        UPDATE friendships SET accepted=true WHERE sender_id=$2 AND recipient_id=$1 RETURNING accepted
         `,
         [myId, otherId]
     );
@@ -168,7 +167,6 @@ module.exports.acceptFriendship = (myId, otherId) => {
 
 
 module.exports.getProfile = (id) => {
-    
     return Promise.all([
         db.query(
             `
@@ -195,7 +193,6 @@ module.exports.getProfile = (id) => {
 module.exports.updateProfile = (id, firstName, lastName, email, age, city, url, password) => {
     // console.log(id, firstName, lastName, email, age, city, url, password);
     return Promise.all([
-
         db.query(
             `
             INSERT INTO profile (id, age, city, userurl)
@@ -333,7 +330,7 @@ module.exports.getLastChats = (myId, otherUserId) => {
     } else {
         return db.query(
             `
-       SELECT chatmessages.id, text, sent_at, seen, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE (recipient_id=$1 AND user_id=$2) OR (recipient_id=$2 AND user_id=$1) ORDER BY chatmessages.id DESC
+        SELECT chatmessages.id, text, sent_at, seen, firstname, lastname, profile_pic_url FROM chatmessages JOIN users on (chatmessages.user_id=users.id) WHERE (recipient_id=$1 AND user_id=$2) OR (recipient_id=$2 AND user_id=$1) ORDER BY chatmessages.id DESC
     `,
             [myId, otherUserId]
         );

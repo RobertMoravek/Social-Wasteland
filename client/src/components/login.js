@@ -9,16 +9,18 @@ class Login extends Component {
             email: "",
             password: "",
             error: false,
-
         };
+
         this.changeInputInConstructor = this.changeInputInConstructor.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
 
+    // One function to change multiple variables. Either really dumb or genius.
     changeInputInConstructor (e) {
         this[e.currentTarget.name] = e.currentTarget.value;
     }
 
+    // Submit the login data for the server to verify
     submitForm(e) {
         e.preventDefault();
         let body = {
@@ -50,7 +52,7 @@ class Login extends Component {
 
 
     checkInputFields() {
-        // does nothing yet
+        // And this is where I'd put my data validation... IF I HAD ONE!!!
         return true;
     }
 

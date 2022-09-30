@@ -1,13 +1,15 @@
+////////////////
+// Due to the educational nature of this project (learing as you go and ever shifting ways to do things), this project is a mess of mixed class and functional components
+////////////////
+
+
 import { Component } from "react";
 import {
     BrowserRouter,
     Route,
     Redirect,
     Switch,
-    Link,
-    useLocation,
 } from "react-router-dom";
-import { useParams } from "react-router";
 import ProfilePic from "./profilePic.js";
 import { ProfilePicUploader } from "./profilePicUploader.js";
 import Profile from "./profile.js";
@@ -21,7 +23,6 @@ import Menu from "./menu/menu.js";
 import OnlineUsersOpener from "./onlineusers/onlineusersopener.js";
 import OnlineUsers from "./onlineusers/onlineusers.js";
 
-// import { Link } from "react-router-dom";
 
 export class App extends Component {
     constructor() {
@@ -41,12 +42,10 @@ export class App extends Component {
             firstChat: true,
         };
 
-        this.openProfilePicUploader = this.openProfilePicUploader.bind(this);
+        this.toggleProfilePicUploader = this.toggleProfilePicUploader.bind(this);
         this.toggleMenuVisibility = this.toggleMenuVisibility.bind(this);
-        this.toggleOnlineUsersVisibility =
-            this.toggleOnlineUsersVisibility.bind(this);
-        this.toggleChatWindowVisibility =
-            this.toggleChatWindowVisibility.bind(this);
+        this.toggleOnlineUsersVisibility = this.toggleOnlineUsersVisibility.bind(this);
+        this.toggleChatWindowVisibility = this.toggleChatWindowVisibility.bind(this);
         this.getUpdatedProfileUrl = this.getUpdatedProfileUrl.bind(this);
         this.giveBackBio = this.giveBackBio.bind(this);
         this.closeChat = this.closeChat.bind(this);
@@ -55,49 +54,54 @@ export class App extends Component {
         this.firstChatToggler = this.firstChatToggler.bind(this);
     }
 
-    openProfilePicUploader(e) {
+    // Shows and hides the profile pic uploader
+    toggleProfilePicUploader(e) {
         this.setState({
             isProfileUploaderVisible: !this.state.isProfileUploaderVisible,
         });
     }
 
+    // Shows and hides chat window
     toggleChatWindowVisibility(e) {
         this.setState({
             isChatVisible: !this.state.isChatVisible,
         });
     }
 
+    // Shows and hides menu
     toggleMenuVisibility(e) {
         this.setState({
             isMenuVisible: !this.state.isMenuVisible,
         });
     }
 
+    // SHows ans hides online users list
     toggleOnlineUsersVisibility(e) {
         this.setState({
             isOnlineUsersVisible: !this.state.isOnlineUsersVisible,
         });
     }
 
+    // cloeses online users list
     closeOnlineUsers() {
         this.setState({
             isOnlineUsersVisible: false,
         });
     }
 
+    // closes chat
     closeChat() {
-        console.log('trying to close chat');
         this.setState({
             isChatVisible: false,
         });
     }
 
+    // On mount, load info about the logged in user
     componentDidMount() {
         fetch("/loaduserinfo")
             .then((response) => response.json())
             .then((result) => {
                 if (!result.error) {
-                    // console.log(result);
                     this.setState({
                         firstName: result.firstname,
                         lastName: result.lastname,
@@ -106,7 +110,6 @@ export class App extends Component {
                         bio: result.bio,
                         id: result.id,
                     });
-                    // console.log(this.state);
                 } else {
                     console.log("loading user info failed");
                     // location.reload();
@@ -115,24 +118,27 @@ export class App extends Component {
             });
     }
 
+    // After uploading a new profile pic, set the profile pic url the new url and close the uploader
     getUpdatedProfileUrl(url) {
         this.setState({
             profilePicUrl: url,
             isProfileUploaderVisible: !this.state.isProfileUploaderVisible,
         });
-        // console.log(this.state);
     }
 
+    // Change bio text
     giveBackBio(newBio) {
         this.setState({ bio: newBio });
     }
 
+    // Change what person (or main chat) you're talking to
     changeChatPartner(id){
         this.setState({
             currentChatPartner: id
         });
     }
 
+    // Sets the firstChat variable to false
     firstChatToggler() {
         this.setState({firstChat: false});
     }
@@ -147,7 +153,7 @@ export class App extends Component {
                 {this.state.isProfileUploaderVisible && (
                     <ProfilePicUploader
                         getUpdatedProfileUrl={this.getUpdatedProfileUrl}
-                        openProfilePicUploader={this.openProfilePicUploader}
+                        toggleProfilePicUploader={this.toggleProfilePicUploader}
                     />
                 )}
 
@@ -166,7 +172,7 @@ export class App extends Component {
                 <section>
                     <BrowserRouter>
                         <ProfilePic
-                            openProfilePicUploader={() => {}}
+                            toggleProfilePicUploader={() => {}}
                             imgFromApp={this.state.profilePicUrl}
                             firstNameFromApp={this.state.firstName}
                             lastNameFromApp={this.state.lastName}
@@ -189,8 +195,8 @@ export class App extends Component {
                         <Switch>
                             <Route exact path="/">
                                 <Profile
-                                    openProfilePicUploader={
-                                        this.openProfilePicUploader
+                                    toggleProfilePicUploader={
+                                        this.toggleProfilePicUploader
                                     }
                                     imgFromApp={this.state.profilePicUrl}
                                     firstNameFromApp={this.state.firstName}

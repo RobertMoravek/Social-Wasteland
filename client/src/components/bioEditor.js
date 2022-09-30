@@ -7,7 +7,7 @@ export default class BioEditor extends Component {
         this.state = {
             isEditorOpen: false,
             bio: this.props.bio,
-            newBio: "",
+            newBio: null,
         };
 
         this.toggleEditor = this.toggleEditor.bind(this);
@@ -15,19 +15,20 @@ export default class BioEditor extends Component {
         this.saveNewBio = this.saveNewBio.bind(this);
     }
 
+    // Toggles the editor on and off
     toggleEditor() {
         this.setState({ isEditorOpen: !this.state.isEditorOpen });
-        console.log(this.state.newBio);
     }
 
+    // When text is typed, put it in newBio
     changeNewBio(e) {
         this.setState({ newBio: e.currentTarget.value });
-
     }
 
+    // If new bio is null (no changes to bio were made), then save bio. Otherwise save bio.
     saveNewBio() {
         let body ="";
-        if (this.state.newBio == ""){
+        if (this.state.newBio == null){
             body = {
                 newBio: this.props.bio,
             };
@@ -47,7 +48,6 @@ export default class BioEditor extends Component {
                 return result.json();
             })
             .then((result) => {
-                // console.log("Result nach db:", result);
                 if (result) {
                     this.setState({ bio: result.bio });
                     this.setState({ isEditorOpen: false });

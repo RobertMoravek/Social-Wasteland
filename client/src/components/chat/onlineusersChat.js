@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import SingleUserChat from "./singleUserChat.js";
 
+// List of online users with the ability to click on them to change the current chat partner
+
 export default function OnlineUsersChat ({changeChatPartner, currentChatPartner, id}) {
     let onlineUsers = useSelector((state) => state.onlineUsers);
-    console.log("onlineusers", onlineUsers);
     return (
         <>
             <div className="online-users-list">
-                <div className={!currentChatPartner ? "single-online-user highlighted-chat" : "single-online-user"}>
+                <div className={!currentChatPartner ? "single-online-user highlighted-chat" : "single-online-user"} onClick={() => changeChatPartner(null)}>
                     <img
                         src="./defaultprofile.jpg"
                         alt=""
@@ -22,12 +23,11 @@ export default function OnlineUsersChat ({changeChatPartner, currentChatPartner,
                     </div>
                     <div
                         className="chat-bubble-icon"
-                        onClick={() => changeChatPartner(null)}
                     >
                         💬
                     </div>
                 </div>
-
+                {/* For every online user, create a single user component */}
                 {onlineUsers.map((user) => (
                     id != user.id &&
                     <SingleUserChat

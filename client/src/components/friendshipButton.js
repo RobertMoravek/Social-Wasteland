@@ -3,29 +3,26 @@ import { useState, useEffect } from "react";
 
 
 export default function FriendshipButton(id) {
-
+    let [buttonInfo, setButtonInfo] = useState({});
+    
+    // id is either passed in as an object (for some reason) or it is part of the url. pick accordingly
     if (Object.keys(id).length === 0) {
         id = useParams().id;
     } else {
         id = id.id;
     }
 
-
-    let [buttonInfo, setButtonInfo] = useState({});
-   
-    
+    //  On load and if the id changes, fetch friendship status from the server
     useEffect (() => {
-
         fetchFriendshipButton();
-
     }, [id]);
 
 
     function fetchFriendshipButton() {
-
         fetch(`/getsinglefriendship/${id}`)
             .then((response) => response.json())
             .then((result) => {
+                // Set button text and api-url accordingly 
                 if (result.rows.length == 0) {
                     setButtonInfo({text: "Add as friend ✅", url: "/makefriendshiprequest"});
                 } else if (result.rows[0].accepted) {
@@ -39,10 +36,9 @@ export default function FriendshipButton(id) {
     }
     
 
-
+    // Post to server with the url attached to the button, resulting in the matching action there
     function useFriendshipButton() {
         let body = {otherUserId: id};
-        console.log(body);
         body = JSON.stringify(body);
         fetch(`${buttonInfo.url}`, {
             method: "post",
@@ -53,14 +49,8 @@ export default function FriendshipButton(id) {
                 return result.json();
             })
             .then((result) => {
-                
+                // Update the status of the button   
                 fetchFriendshipButton();
-                // if(!result.error){
-                //     location.href = "/";
-                // } else {
-                //     this.setState({error : true});
-                //     // this.state.error = true;
-                // }
             });
     }
 

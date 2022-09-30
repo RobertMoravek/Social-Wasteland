@@ -17,16 +17,15 @@ class Registration extends Component {
                 email: false,
                 password: false,
             }
-
         };
+
         this.changeInputInConstructor = this.changeInputInConstructor.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
 
+    // One function to change multiple variables
     changeInputInConstructor (e) {
         this.setState({[e.currentTarget.name] : e.currentTarget.value});
-        // this[e.currentTarget.name] = e.currentTarget.value;
-        // console.log(e.currentTarget);
     }
 
     submitForm(e) {
@@ -38,8 +37,6 @@ class Registration extends Component {
             password: this.state.password
         };
         if (this.checkInputFields()){
-            console.log("Passed the errorcheck");
-
             body = JSON.stringify(body);
             fetch("/register", {
                 method: "post",
