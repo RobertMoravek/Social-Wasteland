@@ -1,4 +1,4 @@
-# 🙅‍♂️ The Anti-Social Network
+# 🙅‍♂️ The Social Wasteland
 
 
 ## Description
