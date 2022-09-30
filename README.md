@@ -28,3 +28,7 @@ This is a student project reflecting different and evershifting levels of knowle
 ![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge/)
 ![AWS S3 & SES](https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Socket.io](https://camo.githubusercontent.com/5d0a6547079513c05b0273dc3d3018a896093c56fc6587606ce476895294afc3/68747470733a2f2f7777772e766563746f726c6f676f2e7a6f6e652f6c6f676f732f736f636b6574696f2f736f636b6574696f2d617232312e737667)
+
+## Preview
+
+![Preview](https://github.com/RobertMoravek/Social-Wasteland/blob/master/preview.jpg) 
